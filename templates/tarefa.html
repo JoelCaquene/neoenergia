@@ -1,54 +1,63 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Tarefas - Cronômetro de Ganho Diário{% endblock %}
+{% block title %}Tarefas - Máquina de Ganhos Diários{% endblock %}
 
 {% block content %}
 <div class="page-container">
     <div class="page-header">
-        <h1>Cronômetro de Ganho Diário 💰</h1>
+        <h1>JOGO AUTOMÁTICO DE GANHOS</h1>
     </div>
 
-    <div class="task-machine-container clock-style">
-        
-        <div class="circular-display-container">
-            <div class="circular-progress" id="circular-progress">
-                <div class="progress-value" id="progress-value">
-                    <i class="fas fa-clock timer-icon"></i> 
-                    <div id="countdown-display" class="countdown-clock">
-                        <span id="hours-display">00</span>:<span id="minutes-display">00</span>:<span id="seconds-display">00</span>
-                    </div>
-                </div>
+    <div class="ticker-board-container">
+        {% if has_active_level %}
+        <div class="ticker-board">
+            <div class="ticker-item">
+                <span class="ticker-label">Nível Ativo:</span>
+                <span class="ticker-value level-name">{{ active_level.level.name|default:"Nenhum" }}</span>
             </div>
-            
-            {# Mensagem que aparecerá abaixo do relógio #}
-            <p id="task-message">Contagem regressiva automática de 24h.</p>
+            <div class="ticker-item">
+                <span class="ticker-label">Ganho Diário:</span>
+                <span class="ticker-value gain-amount">KZ {{ active_level.level.daily_gain|default:"0.00" }}</span>
+            </div>
+            <div class="ticker-item">
+                <span class="ticker-label">Status do Ciclo:</span>
+                <span class="ticker-value status-text" id="cycle-status">...</span>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="task-machine-container counter-style">
+        <div class="display-panel">
+            <p class="display-label">PRÓXIMO GANHO EM:</p>
+            <div id="countdown-display" class="digital-counter">
+                <span class="digit-box" id="hours-display">00</span><span class="separator">:</span>
+                <span class="digit-box" id="minutes-display">00</span><span class="separator">:</span>
+                <span class="digit-box" id="seconds-display">00</span>
+            </div>
         </div>
 
         <div class="machine-controls">
-            <div class="status-lights">
-                <div class="light-indicator red-light" id="light-red"></div>
-                <div class="light-indicator yellow-light" id="light-yellow"></div>
-                <div class="light-indicator green-light" id="light-green"></div>
+            {# NOVO HTML PARA O PAINEL DE LUZ ÚNICA LED VERDE PERSONALIZADA #}
+            <div class="status-led-single">
+                <div class="custom-led" id="single-green-led"></div>
             </div>
             
+            <p id="task-message" class="control-message">Contagem regressiva automática de 24h.</p>
+
             {# O botão é desabilitado/habilitado pelo JS e pela lógica do Django #}
             <button id="work-button" class="action-button primary-action-button">INICIAR CICLO</button>
         </div>
     </div>
-
-    {# --- Bloco de Informações do Nível e Mensagem para NÃO-INVESTIDORES --- #}
-    <div class="tasks-info">
-        {% if has_active_level %}
-            <p><strong>Nível Ativo:</strong> {{ active_level.level.name|default:"Nenhum" }}</p>
-            <p><strong>Ganho Diário:</strong> <span class="gain-amount">KZ {{ active_level.level.daily_gain|default:"0.00" }}</span></p>
-            <p><strong>Status do Ciclo:</strong> <span id="cycle-status">...</span></p>
-        {% else %}
-            {# Nova mensagem para quem não tem nível ativo - REMOVENDO A INSTRUÇÃO ORIGINAL #}
-            <p style="color: var(--warning-color);">⚠️ &nbsp; **MÁQUINA EM STANDBY.** &nbsp; ⚠️</p>
-            <p style="font-size: 0.9rem;">Compre um **Nível/Produto** para liberar e iniciar o ciclo de ganhos diários. Visite o menu **NÍVEL**.</p>
-        {% endif %}
+    
+    {% if not has_active_level %}
+    <div class="tasks-info-standalone">
+        <p style="color: var(--warning-color);">⚠️ &nbsp; **MÁQUINA EM STANDBY.** &nbsp; ⚠️</p>
+        <p style="font-size: 0.9rem;">Compre um **Nível/Produto** para liberar e iniciar o ciclo de ganhos diários. Visite o menu **NÍVEL**.</p>
     </div>
+    {% endif %}
+
 
     {# Mensagens do Django (mantido no final) #}
     {% if messages %}
@@ -62,22 +71,23 @@
     <script>
         // Variável de tempo inicial do Django (se o nível estiver ativo)
         const initialTimeRemaining = {{ cooldown_seconds_remaining|default:0 }}; 
-        
         // Se o usuário tem nível ativo, a máquina está "trabalhando" no ciclo; se não, está em "idle"
         const hasActiveLevel = {{ has_active_level|lower }}; 
 
         document.addEventListener("DOMContentLoaded", function() {
             const workButton = document.getElementById('work-button');
             const taskMessage = document.getElementById('task-message');
-            const cycleStatus = document.getElementById('cycle-status');
+            // Mudei o seletor para pegar o elemento dentro do novo ticker-board
+            const cycleStatus = document.getElementById('cycle-status'); 
             const hoursDisplay = document.getElementById('hours-display');
             const minutesDisplay = document.getElementById('minutes-display');
             const secondsDisplay = document.getElementById('seconds-display');
-            const circularProgress = document.getElementById('circular-progress');
             
-            const lightRed = document.getElementById('light-red');
-            const lightYellow = document.getElementById('light-yellow');
-            const lightGreen = document.getElementById('light-green');
+            // Novo seletor para o LED único
+            const singleGreenLed = document.getElementById('single-green-led');
+
+            // Novo elemento para o ticker (para atualizar o Status se ele existir)
+            const tickerStatusElement = document.querySelector('.ticker-value.status-text');
 
             const MAX_TIME = 86400; // 24 horas em segundos
             let timeRemaining = initialTimeRemaining; 
@@ -103,64 +113,56 @@
                 return cookieValue;
             }
 
-            // --- FUNÇÕES DE CONTROLE DE UI (ADAPTADAS) ---
+            // --- FUNÇÕES DE CONTROLE DE UI (ADAPTADAS PARA O LED ÚNICO VERDE) ---
 
             function updateLightStatus(status) {
-                // status: 'idle', 'running', 'completed', 'no_level'
-                lightRed.classList.remove('active', 'blinking');
-                lightYellow.classList.remove('active', 'blinking');
-                lightGreen.classList.remove('active', 'blinking');
+                // Limpa todas as classes de status
+                singleGreenLed.classList.remove('active', 'pulsing', 'standby');
                 
                 let buttonText = "INICIAR CICLO";
                 let statusText = "INATIVO (Aguardando Início)";
-                let progressColor = '#FF3D00'; // Vermelho/Laranja Inicial
                 
                 if (status === 'running') {
-                    lightYellow.classList.add('blinking');
+                    // Verde pulsante (indicando trabalho/contagem)
+                    singleGreenLed.classList.add('pulsing'); 
                     workButton.disabled = true;
                     buttonText = "CICLO EM ANDAMENTO...";
                     statusText = "ATIVO (Gerando Ganhos)";
-                    progressColor = '#4CAF50'; // Verde
                 } else if (status === 'completed') {
-                    lightGreen.classList.add('active');
+                    // Verde ativo/sólido (indicando conclusão)
+                    singleGreenLed.classList.add('active'); 
                     workButton.disabled = false;
                     buttonText = "RECEBER GANHO (Ciclo Completo)";
                     statusText = "CONCLUÍDO (Pronto para o Ganho)";
-                    progressColor = '#FFC107'; // Amarelo para destacar a ação
                 } else if (status === 'no_level') {
-                    // Novo estado para usuários sem nível ativo
-                    lightRed.classList.add('active');
+                    // Desligado/Standby (Nenhum Nível)
+                    singleGreenLed.classList.add('standby'); // Mudei para uma cor mais sutil (cinza)
                     workButton.disabled = true;
                     buttonText = "NÍVEL INATIVO";
                     statusText = "STANDBY (Nível Requerido)";
-                    progressColor = '#D32F2F'; // Vermelho
-                } else { // 'idle' 
-                    lightRed.classList.add('blinking');
-                    // Se tiver nível, pode iniciar. Se não tiver, desabilita.
+                } else { // 'idle' - Pronto para iniciar
+                    // Desligado/Standby (Pronto para Iniciar)
+                    singleGreenLed.classList.add('standby');
                     workButton.disabled = hasActiveLevel ? false : true; 
                     if (!hasActiveLevel) {
                         buttonText = "NÍVEL INATIVO";
                         statusText = "STANDBY (Nível Requerido)";
-                        progressColor = '#D32F2F';
                     }
                 }
 
                 workButton.textContent = buttonText;
                 
-                // Atualiza o status de texto apenas se o usuário tiver nível
-                if (hasActiveLevel) {
-                    cycleStatus.textContent = statusText;
+                // Atualiza o status de texto do Ticker
+                if (tickerStatusElement) {
+                    tickerStatusElement.textContent = statusText;
                 }
                 
-                // Se não tem nível ativo, o progresso é 0% e vermelho, e o contador é 00:00:00
+                // Se não tem nível ativo, o contador é 00:00:00.
                 if (!hasActiveLevel) {
-                    circularProgress.style.setProperty('--progress', '0%');
                     hoursDisplay.textContent = '00';
                     minutesDisplay.textContent = '00';
                     secondsDisplay.textContent = '00';
                     taskMessage.textContent = "Ative um Nível para iniciar a contagem de 24h.";
-                } else {
-                    circularProgress.style.background = `conic-gradient(${progressColor} var(--progress), #1e2a40 var(--progress))`;
                 }
             }
             
@@ -176,20 +178,13 @@
                     const { hours, minutes, seconds } = formatTime(timeRemaining);
                     hoursDisplay.textContent = hours;
                     minutesDisplay.textContent = minutes;
-                    minutesDisplay.textContent = minutes; // Duplicado no código original, mantido por precaução
                     secondsDisplay.textContent = seconds;
                     taskMessage.textContent = "Próxima geração de lucros em...";
-                    
-                    const progressPercent = ((MAX_TIME - timeRemaining) / MAX_TIME) * 100;
-                    circularProgress.style.setProperty('--progress', `${progressPercent}%`);
-                    
                 } else {
                     hoursDisplay.textContent = '00';
                     minutesDisplay.textContent = '00';
                     secondsDisplay.textContent = '00';
                     taskMessage.textContent = "CICLO COMPLETO! Clique para receber seu ganho!";
-                    
-                    circularProgress.style.setProperty('--progress', '100%'); 
                     
                     clearInterval(countdownInterval); 
                     updateLightStatus('completed');
@@ -224,7 +219,7 @@
                 }
             }
             
-            // --- FUNÇÃO AJAX PRINCIPAL (AGORA APONTA PARA A VIEW tarefa) ---
+            // --- FUNÇÃO AJAX PRINCIPAL (MANTIDA) ---
 
             function checkAndGenerateGain(isInitialStart = false) {
                 if (!hasActiveLevel) {
@@ -259,12 +254,17 @@
                         timeRemaining = data.new_time_remaining || MAX_TIME; 
                         isWorking = true;
                         
+                        // Atualiza o valor do Ganho Diário no Ticker
+                        const tickerGainElement = document.querySelector('.ticker-value.gain-amount');
+                        if (tickerGainElement) {
+                            tickerGainElement.textContent = `KZ ${parseFloat(dailyGain).toFixed(2)}`;
+                        }
+
                         startCountdown(); 
                         
                     } else {
                         taskMessage.textContent = data.message || "Falha ao processar a tarefa.";
                         
-                        // Atualiza o tempo restante com o valor do backend, se fornecido
                         if (data.time_remaining !== undefined) {
                             timeRemaining = data.time_remaining;
                             if (timeRemaining > 0) {
@@ -273,7 +273,6 @@
                                 updateLightStatus('completed');
                             }
                         } else {
-                            // Se falhou e não retornou tempo, assume o estado inicial (idle ou running)
                             if (isWorking) {
                                 updateLightStatus('running'); 
                             } else {
@@ -289,16 +288,14 @@
                 });
             }
             
-            // --- INICIALIZAÇÃO E EVENT LISTENERS (ADAPTADOS) ---
+            // --- INICIALIZAÇÃO E EVENT LISTENERS (MANTIDOS E ADAPTADOS) ---
 
             if (workButton) {
                 workButton.addEventListener('click', function() {
                     if (hasActiveLevel) {
                         // Clica para INICIAR o ciclo (tempo <= 0) ou para receber o ganho e REINICIAR o ciclo (tempo <= 0)
-                        // A única forma de o botão estar habilitado é se o tempo for <= 0 ou se for o primeiro clique.
                         checkAndGenerateGain(isInitialStart = timeRemaining <= 0); 
                     } else {
-                        // Se não tem nível, desativa e mostra a mensagem correta
                         updateLightStatus('no_level');
                     }
                 });
@@ -317,35 +314,41 @@
                     taskMessage.textContent = "Máquina pronta! Clique em INICIAR CICLO para começar o ciclo de 24 horas.";
                 }
             } else {
-                // Usuário sem nível ativo - Botão desabilitado, luz vermelha, contador 00:00:00.
                 updateLightStatus('no_level'); 
             }
         });
     </script>
 </div>
-{# Seu bloco de estilo original, fora de qualquer tag {% block %} para evitar o erro #}
 <style>
-/* ... (Seu CSS completo deve ser incluído aqui) ... */
 /* ------------------------------------ */
-/* ESTILOS GERAIS */
+/* ESTILOS GERAIS - Fundo Branco Adicionado */
 /* ------------------------------------ */
 :root {
     --primary-color: #87CEEB; /* Azul Claro / Sky Blue */
     --secondary-color: #4CAF50; /* Verde */
-    --dark-bg: #0d1a2f; /* Fundo Escuro */
-    --medium-bg: #1a3250; /* Fundo Médio */
+    --dark-bg: #1a1a1a; /* Fundo Escuro (Usado para caixas, não o fundo da página) */
+    --medium-bg: #2a2a2a; /* Fundo Médio */
     --danger-color: #D32F2F; /* Vermelho */
     --warning-color: #FFC107; /* Amarelo */
+    --digital-green: #00FF00; /* Novo - Verde Digital */
+    --custom-green: #2ecc71; /* Verde Bonito */
+    --custom-green-glow: #27ae60; /* Sombra do Verde */
+}
+
+/* Fundo da Página (O MAIS IMPORTANTE: FUNDO BRANCO) */
+body {
+    background-color: #FFFFFF !important; /* Fundo Branco */
 }
 
 .page-container { 
     padding: 10px; 
-    background-color: var(--dark-bg); 
+    background-color: #FFFFFF; /* Garante que o container principal é branco */
     min-height: 100vh;
-    color: #fff;
+    color: var(--dark-bg); /* Cor do texto agora é escura */
 }
+
 .page-header { 
-    background-color: var(--medium-bg); 
+    background-color: #f0f0f0; /* Fundo claro para o cabeçalho */
     border-bottom: 3px solid var(--primary-color); 
     padding: 15px;
     text-align: center;
@@ -353,46 +356,83 @@
     border-radius: 8px;
 }
 .page-header h1 { 
-    color: var(--primary-color); 
-    text-shadow: 0 0 8px rgba(135, 206, 235, 0.7); 
+    color: var(--dark-bg); /* Título escuro */
+    text-shadow: none; /* Remove o brilho */
     font-size: 1.8rem;
-}
-.info-box-danger { 
-    background-color: var(--danger-color); 
-    padding: 15px; 
-    margin-top: 15px; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-    text-align: center;
-    font-weight: bold;
-}
-.tasks-info { 
-    background-color: var(--medium-bg); 
-    border: 1px solid var(--primary-color); 
-    color: #fff; 
-    padding: 15px; 
-    margin-top: 30px; 
-    border-radius: 8px; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.6); 
-    text-align: center;
-}
-.tasks-info strong { 
-    color: var(--primary-color); 
-}
-.tasks-info .gain-amount { 
-    color: var(--secondary-color); 
-    font-weight: bold; 
-    font-size: 1.1rem;
 }
 
 /* ------------------------------------ */
-/* ESTILO DA MÁQUINA CIRCULAR (RELÓGIO) */
+/* NOVO ESTILO: PLACA DE INFORMAÇÕES (TICKER) */
 /* ------------------------------------ */
-.task-machine-container.clock-style { 
-    background: var(--medium-bg); 
-    border: 4px solid var(--primary-color); 
-    border-radius: 15px; 
-    max-width: 350px; 
+.ticker-board-container {
+    overflow: hidden;
+    margin-bottom: 25px;
+    border: 2px solid var(--primary-color);
+    border-radius: 8px;
+    background-color: var(--medium-bg);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.ticker-board {
+    display: flex;
+    white-space: nowrap;
+    animation: marquee 15s linear infinite; /* Animação de deslize */
+    padding: 10px 0;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.ticker-item {
+    margin: 0 40px;
+    font-size: 1rem;
+    color: #fff;
+    flex-shrink: 0; /* Impede que os itens encolham */
+    display: flex;
+    align-items: center;
+}
+
+.ticker-label {
+    font-weight: normal;
+    color: #bbb;
+    margin-right: 5px;
+}
+
+.ticker-value {
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.ticker-value.level-name {
+    color: var(--primary-color);
+}
+
+.ticker-value.gain-amount {
+    color: var(--digital-green); /* Destaque em verde */
+}
+
+.ticker-value.status-text {
+    color: var(--warning-color);
+}
+
+.ticker-board-alert {
+    padding: 10px;
+    text-align: center;
+    color: var(--warning-color);
+    font-weight: bold;
+    background-color: var(--medium-bg);
+}
+
+/* ------------------------------------ */
+/* NOVO ESTILO: MÁQUINA DE CONTADOR DIGITAL */
+/* ------------------------------------ */
+.task-machine-container.counter-style { 
+    background: var(--dark-bg); 
+    border: 6px solid var(--medium-bg); /* Borda mais grossa para imitar máquina */
+    border-radius: 12px; 
+    max-width: 320px; 
     margin: 0 auto 30px auto; 
     padding: 20px; 
     box-shadow: 0 10px 30px rgba(0,0,0,0.8), inset 0 0 15px rgba(255, 255, 255, 0.05); 
@@ -401,67 +441,60 @@
     align-items: center;
 }
 
-.circular-display-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 25px;
-    width: 100%;
-}
-
-/* O CÍRCULO DE PROGRESSO */
-.circular-progress {
-    --progress: 0%; /* Variável CSS atualizada pelo JS */
-    position: relative;
-    height: 200px;
-    width: 200px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    background: conic-gradient(
-        var(--secondary-color) var(--progress), 
-        #1e2a40 var(--progress)
-    );
-    box-shadow: 0 0 15px var(--primary-color), inset 0 0 10px rgba(0,0,0,0.8);
-    border: 5px solid var(--dark-bg);
-}
-
-/* O VALOR DENTRO DO CÍRCULO */
-.progress-value {
-    height: 180px;
-    width: 180px;
-    background-color: var(--dark-bg);
-    border-radius: 50%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
+.display-panel {
+    background-color: #000000; /* Tela preta do display */
+    border: 3px solid #333;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
     text-align: center;
-    padding: 10px;
+    width: 90%;
 }
 
-.timer-icon {
-    font-size: 2rem;
-    color: var(--primary-color);
+.display-label {
+    font-size: 0.8rem;
+    color: #888;
     margin-bottom: 5px;
 }
 
-.countdown-clock { 
-    font-family: 'Digital-7', monospace; /* Fonte que imita display digital */
-    font-size: 2.5rem; 
+.digital-counter { 
+    font-family: 'Digital-7', monospace; 
+    font-size: 3.5rem; 
     font-weight: bold; 
-    color: var(--warning-color); 
-    text-shadow: 0 0 10px rgba(255, 193, 7, 0.8); 
+    color: var(--digital-green); /* Cor neon verde digital */
+    text-shadow: 0 0 15px rgba(0, 255, 0, 0.8); /* Brilho neon */
+    display: flex;
+    justify-content: center;
+    gap: 5px;
 }
 
-#task-message { 
+.digit-box {
+    background-color: #1a1a1a; /* Fundo para os dígitos individuais */
+    padding: 2px 5px;
+    border-radius: 3px;
+    box-shadow: inset 0 0 5px rgba(0,0,0,0.9);
+}
+
+.separator {
+    color: var(--digital-green);
+    animation: blink-colon 1s infinite;
+}
+
+@keyframes blink-colon {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+.control-message { 
     font-size: 0.9rem; 
     color: #ddd; 
     margin-top: 10px; 
+    text-align: center;
+    min-height: 20px; /* Para evitar que o layout salte ao mudar a mensagem */
 }
 
 /* ------------------------------------ */
-/* CONTROLES E LUZES */
+/* NOVO ESTILO: LED ÚNICO VERDE PERSONALIZADO */
 /* ------------------------------------ */
 .machine-controls {
     width: 100%;
@@ -470,56 +503,64 @@
     align-items: center;
 }
 
-.status-lights { 
-    margin-bottom: 25px; 
-    background-color: #222; 
-    border-radius: 5px; 
-    padding: 10px 20px; 
-    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.9); 
+.status-led-single {
+    margin-bottom: 15px; 
+    background-color: #000; 
+    border-radius: 15px; /* Formato de pílula horizontal para o container */
+    padding: 10px 30px; 
+    box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.9); 
     display: flex; 
-    justify-content: space-around; 
+    justify-content: center; 
     align-items: center; 
-    width: 70%; 
+    width: 50%;
+    border: 2px solid #555;
 }
 
-.light-indicator { 
-    width: 15px; 
-    height: 15px; 
-    border-radius: 50%; 
-    margin: 0 10px; 
-    background-color: #111; 
-    transition: all 0.2s;
+.custom-led {
+    width: 18px; /* Tamanho do LED */
+    height: 18px;
+    border-radius: 50%; /* Formato Circular */
+    background-color: #333; /* Cor escura/desligada */
+    transition: all 0.5s ease-in-out;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5); /* Sombra para profundidade */
 }
 
-.light-indicator.active, .light-indicator.blinking { 
-    border: 2px solid #fff; 
+/* Estado Ativo/Completo (Verde Sólido e Brilhante) */
+.custom-led.active {
+    background-color: var(--custom-green);
+    box-shadow: 0 0 15px 5px var(--custom-green-glow), 
+                inset 0 0 8px rgba(255, 255, 255, 0.8);
 }
 
-.light-indicator.red-light.active, .light-indicator.red-light.blinking { 
-    background-color: var(--danger-color); 
-    box-shadow: 0 0 12px var(--danger-color); 
+/* Estado Pulsante/Running (Verde Sutil) */
+@keyframes pulse-green { 
+    0% { 
+        opacity: 0.5;
+        box-shadow: 0 0 8px 1px var(--custom-green-glow);
+    } 
+    50% { 
+        opacity: 1;
+        box-shadow: 0 0 15px 4px var(--custom-green-glow);
+    }
+    100% {
+        opacity: 0.5;
+        box-shadow: 0 0 8px 1px var(--custom-green-glow);
+    }
 }
 
-.light-indicator.yellow-light.active, .light-indicator.yellow-light.blinking { 
-    background-color: var(--warning-color); 
-    box-shadow: 0 0 12px var(--warning-color); 
+.custom-led.pulsing { 
+    background-color: var(--custom-green);
+    animation: pulse-green 1.5s infinite alternate; 
 }
 
-.light-indicator.green-light.active, .light-indicator.green-light.blinking { 
-    background-color: var(--secondary-color); 
-    box-shadow: 0 0 12px var(--secondary-color); 
+/* Estado Standby/No_Level (Cinza Escuro) */
+.custom-led.standby {
+    background-color: #555;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-@keyframes blinking { 
-    0% { opacity: 0.3; } 
-    100% { opacity: 1; } 
-}
 
-.light-indicator.blinking { 
-    animation: blinking 0.8s infinite alternate; 
-}
-
-/* BOTÃO */
+/* BOTÃO - Mantido o estilo original com fundo verde */
 .action-button.primary-action-button { 
     background-color: var(--secondary-color); 
     background-image: linear-gradient(to top, #388E3C, #4CAF50); 
@@ -533,6 +574,7 @@
     transition: all 0.1s ease; 
     width: 90%; 
     font-size: 1.1rem;
+    margin-top: 15px;
 }
 .action-button.primary-action-button:active { 
     transform: translateY(3px); 
@@ -544,6 +586,18 @@
     box-shadow: 0 5px 0 #333 !important; 
     color: #bbb; 
     cursor: not-allowed;
+}
+
+/* Estilo para a mensagem de quem não tem nível ativo (em fundo branco) */
+.tasks-info-standalone { 
+    background-color: #f0f0f0; 
+    border: 1px solid var(--warning-color); 
+    color: var(--dark-bg); 
+    padding: 15px; 
+    margin-top: 30px; 
+    border-radius: 8px; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+    text-align: center;
 }
 </style>
 {% endblock %}

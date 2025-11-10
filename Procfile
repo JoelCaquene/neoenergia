@@ -1,1 +1,1 @@
-web: gunicorn regard.wsgi
+web: gunicorn neoenergia.wsgi

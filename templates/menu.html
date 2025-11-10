@@ -4,353 +4,185 @@
 {% block title %}Menu{% endblock %}
 
 {% block content %}
-
-{# POP-UP DE BOAS-VINDAS: Mantido #}
-<div id="welcomePopup" class="popup-overlay">
-    <div class="popup-content">
-        <div class="popup-header">
-            {# Você deve fornecer a imagem 'popup_welcome_image.jpg' no seu static/images/ #}
-            <img src="{% static 'images/placeholder_1.jpg' %}" alt="Bem-vindo" class="popup-image">
-        </div>
-        <div class="popup-body">
-            <h2 class="popup-title">SEJA BEM VINDO (A)</h2>
-            <p class="popup-text welcome-text">
-                Siga os nossos canais!
-            </p>
-            <div class="social-links">
-                {% if whatsapp_link %}
-                    <a href="{{ whatsapp_link }}" target="_blank" class="social-button whatsapp-social">
-                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
-                    </a>
-                {% endif %}
-                {% if telegram_link %}
-                    <a href="{{ telegram_link }}" target="_blank" class="social-button telegram-social">
-                        <i class="fa-brands fa-telegram"></i> Telegram
-                    </a>
-                {% endif %}
-            </div>
-            <button id="closePopup" class="popup-close-button">Continuar</button>
-        </div>
-    </div>
-</div>
-
-{# 1. IMAGEM DO CARROSSEL: No topo #}
-<div class="image-gallery top-position">
-    <div class="image-slider">
-        <img src="{% static 'images/placeholder_1.jpg' %}" alt="Imagem da Plataforma 1" class="active">
-        <img src="{% static 'images/placeholder_2.jpg' %}" alt="Imagem da Plataforma 2">
-    </div>
-</div>
-
-{# FAIXA DE NOTIFICAÇÃO (MARQUEE) #}
-<div class="notification-marquee-wrapper">
-    <div class="notification-icon">
-        <i class="fa-solid fa-bullhorn"></i>
-    </div>
-    <div class="marquee-text-container">
-        <p class="marquee-text">
-            REGARD É UMA INSTITUIÇÃO PREOCUPADO COM O BEM ESTAR SOCIAL, E ECONÔMICA DA POPULAÇÃO EM GERAL.
-        </p>
-    </div>
-</div>
-
-{# CONTAINER PRINCIPAL: para acomodar botões laterais e a roleta #}
-<div class="main-layout-content">
-    
-    {# BOTÕES DE AÇÃO LATERAIS (Vertical) - AGORA COM CORES INDIVIDUAIS E MENOS ALTURA #}
-    <div class="action-buttons-lateral">
-        <a href="{% url 'deposito' %}" class="lateral-item deposit-btn color-deposito">
-            <div class="icon-container-lateral">
-                <i class="fa-solid fa-sack-dollar"></i>
-            </div>
-            <span>Depósito</span>
-        </a>
-        <a href="{% url 'saque' %}" class="lateral-item withdraw-btn color-saque">
-            <div class="icon-container-lateral">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            </div>
-            <span>Saque</span>
-        </a>
-        <a href="{% url 'tarefa' %}" class="lateral-item task-btn color-tarefa">
-            <div class="icon-container-lateral">
-                <i class="fa-solid fa-pen-to-square"></i>
-            </div>
-            <span>Tarefa</span>
-        </a>
-        <a href="{% url 'perfil' %}" class="lateral-item profile-btn color-perfil">
-            <div class="icon-container-lateral">
-                <i class="fa-solid fa-user-circle"></i>
-            </div>
-            <span>Perfil</span>
-        </a>
-    </div>
-
-    {# ROLETA (Ao lado dos botões laterais) #}
-    <div class="roulette-section-white">
-        <div class="roulette-container">
-            <a href="{% url 'roleta' %}" class="roulette-button-link">
-                <img src="{% static 'images/roulette_wheel_animated.png' %}" alt="Girar a Roleta" class="roulette-image" id="rouletteImage">
-            </a>
-        </div>
-    </div>
-</div>
-
-
-{# BARRA DE NAVEGAÇÃO INFERIOR #}
-<nav class="footer-menu-new">
-    <a href="{% url 'menu' %}" class="footer-item active">
-        <i class="fa-solid fa-house"></i>
-        <span>Menu</span>
-    </a>
-    <a href="{% url 'nivel' %}" class="footer-item">
-        <i class="fa-solid fa-medal"></i>
-        <span>Nível</span>
-    </a>
-    <a href="{% url 'equipa' %}" class="footer-item">
-        <i class="fa-solid fa-users"></i>
-        <span>Equipa</span>
-    </a>
-</nav>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Lógica do Slider (MANTIDA)
-        const images = document.querySelectorAll('.image-slider img');
-        let currentImage = 0;
-
-        if (images.length > 1) {
-            setInterval(() => {
-                images[currentImage].classList.remove('active');
-                currentImage = (currentImage + 1) % images.length;
-                images[currentImage].classList.add('active');
-            }, 3000);
-        }
-
-        // Lógica de Animação para a Roleta (MANTIDA)
-        const rouletteImage = document.getElementById('rouletteImage');
-        if (rouletteImage) {
-            rouletteImage.classList.add('spinning');
-        }
-
-        // Lógica do Pop-up de Boas-Vindas (MANTIDA)
-        const popup = document.getElementById('welcomePopup');
-        const closeButton = document.getElementById('closePopup');
-
-        popup.style.display = 'flex'; 
-
-        closeButton.addEventListener('click', () => {
-            popup.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === popup) {
-                popup.style.display = 'none';
-            }
-        });
-    });
-</script>
-
 <style>
-    /* ---------------------- CSS GERAL E POP-UP (MANTIDO) ---------------------- */
-    html {
-        -webkit-text-size-adjust: 100%;
-        -ms-text-size-adjust: 100%;
-        touch-action: manipulation;
-    }
+    /* O CSS foi mantido o mesmo da sua última versão, incluindo as correções de ícone, para não introduzir novos erros de estilo. */
+    /* ---------------------- CSS DE AJUSTE GERAL E CORES ---------------------- */
+    /* Fundo principal da página (claro, mas o conteúdo é escuro) */
     body {
-        background-color: #f7f7f7 !important; 
-        overflow-x: hidden; 
+        background-color: #f7f7f7 !important;
+        overflow-x: hidden;
     }
     .container {
-        padding-bottom: 70px; 
-        padding-left: 0;
-        padding-right: 0;
+        padding: 0;
+        padding-bottom: 70px; /* Espaço para o footer */
         background-color: transparent !important;
     }
-    
+    /* Esconder o header e navegação padrão que não são usados neste layout */
     .menu-header, .news-marquee-container {
         display: none !important;
     }
 
-    /* POP-UP STYLES (Mantido) */
-    .popup-overlay {
-        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-        background-color: rgba(0, 0, 0, 0.8);
-        display: none; justify-content: center; align-items: center;
-        z-index: 1000; padding: 20px; box-sizing: border-box;
+    /* Cor principal do fundo dos blocos (Dark Blue/Navy) */
+    .dark-bg {
+        background-color: #1a3359;
     }
-    .popup-content {
-        background-color: #fff; color: #000; width: 90%; max-width: 400px;
-        border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.9);
-        overflow: hidden; border: 2px solid #1e8449; 
-    }
-    .popup-header { height: 120px; background-color: #1e8449; overflow: hidden; }
-    .popup-image { width: 100%; height: 100%; object-fit: cover; }
-    .popup-body { padding: 15px; text-align: center; }
-    .popup-title { font-size: 1.3rem; color: #1e8449; margin-top: 0; margin-bottom: 10px; }
-    .welcome-text { font-size: 1rem; font-weight: 500; color: #333; margin-bottom: 20px; }
-    .social-links { display: flex; justify-content: space-around; margin-bottom: 20px; }
-    .social-button { text-decoration: none; color: white; padding: 8px 12px; border-radius: 5px; font-size: 0.9rem; font-weight: bold; }
-    .whatsapp-social { background-color: #25D366; }
-    .telegram-social { background-color: #0088cc; }
-    .popup-close-button { background-color: #1e8449; color: white; border: none; padding: 10px 20px; cursor: pointer; border-radius: 5px; width: 100%; }
-
-
-    /* IMAGEM DO CARROSSEL (MANTIDO) */
-    .image-gallery {
-        margin: 0; 
-        padding: 15px 15px 0 15px;
-    }
-    .image-slider {
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-    }
-    .image-slider img {
-        width: 100%;
-        height: auto;
-    }
-    
-    /* FAIXA DE NOTIFICAÇÃO (MANTIDO) */
-    .notification-marquee-wrapper {
-        display: flex;
-        align-items: center;
-        background-color: #e5f5e8;
-        color: #1e8449; 
-        padding: 5px 15px;
-        margin: 15px 15px 0 15px; 
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        font-size: 0.8rem;
-        height: 30px;
-    }
-    .notification-icon {
-        font-size: 1rem;
-        margin-right: 10px;
-        flex-shrink: 0;
-    }
-    .marquee-text-container {
-        flex-grow: 1;
-        white-space: nowrap;
-        overflow: hidden;
+    .header-box {
+        background-color: #1a3359;
+        color: white;
+        padding: 15px;
         position: relative;
-        padding-bottom: 2px;
     }
-    .marquee-text {
-        display: inline-block;
-        padding-left: 100%;
-        animation: marquee 15s linear infinite;
-        margin: 0;
-        font-weight: 600;
-    }
-    @keyframes marquee {
-        0% { transform: translate(0, 0); }
-        100% { transform: translate(-100%, 0); }
-    }
-
-
-    /* ---------------------- NOVO LAYOUT LATERAL E ROLETA ---------------------- */
-    .main-layout-content {
+    .header-top {
         display: flex;
-        justify-content: flex-start;
+        justify-content: space-between;
         align-items: flex-start;
-        padding: 15px 15px 0 15px;
-        margin-top: 15px; 
+        margin-bottom: 15px;
+    }
+    .logo-section {
+        display: flex;
+        align-items: center;
+    }
+    .logo-section img {
+        height: 35px; /* Tamanho do logo ajustado */
+        margin-right: 8px;
+    }
+    .logo-section h1 {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: white; /* Cor do fundo do bloco */
+        margin: 0;
+    }
+
+    .avatar-section {
+        text-align: center;
         position: relative;
     }
-
-    /* BOTÕES LATERAIS (Área de controle) */
-    .action-buttons-lateral {
-        display: flex;
-        flex-direction: column;
-        gap: 6px; /* REDUZIDO o espaço entre botões (era 8px) */
-        position: absolute; 
-        top: 0;
-        left: 15px;
-        z-index: 10;
-        width: 90px; 
-    }
-
-    /* ESTILO GERAL DO BOTÃO LATERAL - ALTURA REDUZIDA */
-    .lateral-item {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
-        text-decoration: none;
-        padding: 8px 5px; /* REDUZIDO o padding interno (era 10px) */
-        border-radius: 10px; 
-        color: #fff;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-        transition: transform 0.2s, box-shadow 0.2s;
-        border: 1px solid rgba(255, 255, 255, 0.1); /* Borda mais discreta */
-    }
-    .lateral-item:active {
-        transform: translateY(1px);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
-    }
-
-    /* CORES PERSONALIZADAS PARA CADA BOTÃO */
-    .color-deposito {
-        /* Verde e Azul para Dinheiro/Crescimento */
-        background: linear-gradient(145deg, #1e8449, #176f3c); 
-    }
-    .color-saque {
-        /* Vermelho/Laranja para Ação/Saída */
-        background: linear-gradient(145deg, #cc4e4e, #a93c3c); 
-    }
-    .color-tarefa {
-        /* Azul Claro/Ciano para Produtividade */
-        background: linear-gradient(145deg, #4aa6cc, #3982a9); 
-    }
-    .color-perfil {
-        /* Roxo/Magenta para Identidade/Perfil */
-        background: linear-gradient(145deg, #8e44ad, #7a3894); 
-    }
-
-
-    /* ESTILOS DOS ÍCONES */
-    .icon-container-lateral {
-        width: 35px; /* Ícone um pouco menor (era 40px) */
-        height: 35px;
+    .avatar-placeholder {
+        width: 50px;
+        height: 50px;
+        background-color: #fff;
+        border-radius: 50%;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #fff; 
-        border-radius: 50%;
-        margin-bottom: 3px; /* Espaço reduzido (era 5px) */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Sombra mais suave */
+        margin: 0 auto 5px auto;
+        border: 2px solid white;
     }
-    .icon-container-lateral i {
-        font-size: 1.3rem; /* Ícone levemente menor (era 1.5rem) */
-        color: #0d1a2f; 
+    .avatar-placeholder i {
+        font-size: 2rem;
+        color: #1a3359;
     }
-    .lateral-item span {
-        font-size: 0.65rem; /* Texto levemente menor (era 0.7rem) */
-        font-weight: 600;
-        color: #fff;
-        text-shadow: 0 1px 1px rgba(0, 0, 0, 0.6);
+    .avatar-section span {
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 500;
+        color: white;
     }
 
-    /* ROLETA (Ao lado dos botões laterais) - MANTIDO */
-    .roulette-section-white {
-        margin-left: 100px; 
-        padding-left: 15px; 
-        flex-grow: 1; 
-        text-align: center; 
-        background-color: transparent; 
-        width: calc(100% - 115px); 
+    .balance-info {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        padding: 5px 0;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .roulette-container {
-        display: inline-block; 
-        margin-top: 5px; 
+    .balance-item {
+        text-align: left;
+        flex: 1;
     }
-    .roulette-image {
-        max-width: 100%; 
-        width: 250px; 
-        height: auto;
-        animation: spinning 4s linear infinite; 
+    .balance-item:last-child {
+        text-align: right;
+    }
+    .balance-item p {
+        margin: 0;
+        font-size: 0.8rem;
+        font-weight: 300;
+        color: #ccc;
+    }
+    .balance-item strong {
+        display: block;
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-top: 2px;
+        color: white;
+    }
+    .balance-item .level {
+        color: #ffcc00; /* Destaque para o Nível */
+    }
+
+
+    /* ---------------------- SEÇÃO DE BOTÕES DE AÇÃO (4 COLUNAS) ---------------------- */
+    .action-grid {
+        display: flex;
+        justify-content: space-around;
+        padding: 15px 0;
+        margin: 0 15px; /* Ajuste para centralizar no bloco */
+    }
+    .action-item {
+        flex: 1;
+        text-align: center;
+        text-decoration: none;
+        color: white;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 5px 0;
+    }
+    .action-icon-box {
+        width: 45px;
+        height: 45px;
+        background-color: rgba(255, 255, 255, 0.15); /* Fundo sutil */
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+    .action-icon-box i {
+        font-size: 1.3rem;
+        color: #ffcc00; /* Cor amarela/dourada para os ícones */
+    }
+    .action-item span {
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+
+    /* ---------------------- SEÇÃO DA ROLETA ---------------------- */
+    .roulette-section-box {
+        background-color: #1a3359;
+        margin: 15px 0;
+        padding: 15px;
+        border-radius: 0;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    .roulette-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: white;
+        flex: 1;
+    }
+    .roulette-image-box {
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    }
+    .roulette-image-box img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Animação da roleta */
+    .spinning {
+           animation: spinning 4s linear infinite;
     }
     @keyframes spinning {
         from { transform: rotate(0deg); }
@@ -358,7 +190,47 @@
     }
 
 
-    /* RODAPÉ (FIXO E BRANCO) - MANTIDO */
+    /* ---------------------- SEÇÃO DE CONVITE ---------------------- */
+    .invite-section-box {
+        background-color: #1a3359;
+        margin: 15px 0;
+        padding: 15px;
+        color: white;
+    }
+    .invite-section-box h3 {
+        font-size: 1rem;
+        font-weight: 700;
+        margin-bottom: 5px;
+        color: #ffcc00;
+    }
+    .invite-box-custom {
+        background-color: rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        border-radius: 5px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 10px;
+        border: 1px dashed rgba(255, 255, 255, 0.3);
+    }
+    .invite-box-custom span {
+        flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis; /* Adiciona '...' se o texto for muito longo */
+        min-width: 0;
+        margin-right: 10px;
+        font-size: 0.9rem;
+        color: white;
+    }
+    .copy-button {
+        background-color: #007bff; color: #fff; border: none; padding: 5px 10px;
+        border-radius: 4px; cursor: pointer; font-weight: bold; margin-left: 10px; white-space: nowrap;
+        font-size: 0.8rem;
+    }
+
+
+    /* ---------------------- RODAPÉ (FOOTER) ---------------------- */
     .footer-menu-new {
         position: fixed;
         bottom: 0;
@@ -367,9 +239,9 @@
         display: flex;
         justify-content: space-around;
         align-items: center;
-        background-color: #fff; 
-        border-top: 1px solid #ddd;
-        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        background-color: #1a3359; /* Cor do fundo dos blocos */
+        border-top: 1px solid #000;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.5);
         z-index: 500;
         height: 60px;
     }
@@ -378,13 +250,13 @@
         flex-direction: column;
         align-items: center;
         text-decoration: none;
-        color: #999; 
+        color: #999;
         padding: 5px 0;
         flex-grow: 1;
         transition: color 0.3s;
     }
     .footer-item:hover, .footer-item.active {
-        color: #1e8449; 
+        color: #ffcc00; /* Cor de destaque */
     }
     .footer-item i {
         font-size: 1.3rem;
@@ -395,5 +267,316 @@
         font-weight: 600;
     }
 
+    /* ---------------------- POP-UP CUSTOMIZADO (ESTILOS NECESSÁRIOS) ---------------------- */
+    .popup-overlay {
+        display: none; /* Inicia escondido, será exibido via JS */
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+    .popup-content {
+        background-color: #fff;
+        border-radius: 10px;
+        width: 90%;
+        max-width: 350px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        overflow: hidden;
+    }
+    .popup-header {
+        height: 10px !important;
+        background-color: #1a3359 !important;
+        overflow: hidden;
+    }
+    .popup-body {
+        padding: 20px;
+        text-align: center;
+    }
+    .popup-title {
+        color: #1a3359 !important;
+        margin-top: 5px !important;
+        font-size: 1.5rem;
+        font-weight: bold;
+    }
+    .welcome-text {
+        font-size: 0.9rem;
+        color: #6c757d;
+        margin: 15px 0;
+    }
+    .popup-close-button {
+        background-color: #1a3359 !important;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        width: 100%;
+        margin-top: 15px;
+    }
+    .social-links {
+        margin-top: 15px;
+    }
+    .social-button {
+        display: block;
+        padding: 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        font-weight: bold;
+        transition: background-color 0.3s;
+    }
+    .whatsapp-social {
+        background-color: #25d366;
+        color: white;
+    }
+    .whatsapp-social i {
+        margin-right: 8px;
+    }
+    .telegram-social { display: none !important; } /* Remover Telegram do pop-up */
+
 </style>
+
+{# ---------------------- HEADER PRINCIPAL (Dark Blue) ---------------------- #}
+<div class="header-box">
+    <div class="header-top">
+        <div class="logo-section">
+            <img src="{% static 'images/neoleaf.png' %}" alt="Logo Neoenergia">
+            <h1>NEOENERGIA</h1>
+        </div>
+        <a href="{% url 'perfil' %}" class="avatar-section">
+            <div class="avatar-placeholder">
+                <i class="fa-solid fa-user-tie"></i>
+            </div>
+            <span>AVATAR</span>
+        </a>
+    </div>
+
+    {# Saldo e Nível #}
+    <div class="balance-info">
+        <div class="balance-item">
+            <p>SALDO ACTIVO</p>
+            <strong>{{ user.available_balance|default:"0.00" }} KZ</strong>
+        </div>
+        <div class="balance-item">
+            <p>NÍVEL</p>
+            <strong class="level">{{ user.active_level.name|default:"Nenhum" }}</strong>
+        </div>
+    </div>
+</div>
+
+{# ---------------------- BOTÕES DE AÇÃO (4 COLUNAS) ---------------------- #}
+<div class="dark-bg">
+    <div class="action-grid">
+        <a href="{% url 'deposito' %}" class="action-item">
+            <div class="action-icon-box"><i class="fa-solid fa-wallet"></i></div>
+            <span>Depósito</span>
+        </a>
+        <a href="{% url 'saque' %}" class="action-item">
+            {# Ícone de Saque CORRIGIDO #}
+            <div class="action-icon-box"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+            <span>Saque</span>
+        </a>
+        <a href="{% url 'equipa' %}" class="action-item">
+            <div class="action-icon-box"><i class="fa-solid fa-users"></i></div>
+            <span>Equipa</span>
+        </a>
+        <a href="{% url 'tarefa' %}" class="action-item">
+            <div class="action-icon-box"><i class="fa-solid fa-clipboard-list"></i></div>
+            <span>Tarefa</span>
+        </a>
+    </div>
+</div>
+
+{# ---------------------- SEÇÃO DA ROLETA ---------------------- #}
+<a href="{% url 'roleta' %}" class="roulette-section-box">
+    <div class="roulette-title">
+        A SUA ROLETA
+    </div>
+    <div class="roulette-image-box">
+        <img src="{% static 'images/roulette_wheel_animated.png' %}" alt="Roda da Sorte" class="roulette-image spinning" id="rouletteImage">
+    </div>
+</a>
+
+{# ---------------------- SEÇÃO DE CONVITE (CORRIGIDA PARA CÓPIA) ---------------------- #}
+<div class="invite-section-box">
+    <a href="{% url 'equipa' %}" style="text-decoration: none; color: inherit;">
+        <h3>Convide Amigos e Ganhe Comissão</h3>
+    </a>
+
+    {# Estrutura de Cópia Interativa #}
+    <div class="invite-box-custom">
+        <span id="invite-link-menu">
+            {{ invite_link|default:"[Link Não Disponível]" }}
+        </span>
+        <button id="copyLinkButton" class="copy-button">
+            <i class="fas fa-copy"></i> Copiar
+        </button>
+    </div>
+</div>
+
+{# ---------------------- BARRA DE NAVEGAÇÃO INFERIOR ---------------------- #}
+<nav class="footer-menu-new">
+    <a href="{% url 'menu' %}" class="footer-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Menu</span>
+    </a>
+    <a href="{% url 'nivel' %}" class="footer-item">
+        <i class="fa-solid fa-chart-area"></i>
+        <span>Nível</span>
+    </a>
+    <a href="{% url 'sobre' %}" class="footer-item">
+        <i class="fa-solid fa-info-circle"></i>
+        <span>Sobre</span>
+    </a>
+    <a href="{% url 'perfil' %}" class="footer-item">
+        <i class="fa-solid fa-user-circle"></i>
+        <span>Perfil</span>
+    </a>
+</nav>
+
+{# ---------------------- POP-UP DE BOAS-VINDAS (REINTRODUZIDO) ---------------------- #}
+<div id="welcomePopup" class="popup-overlay">
+    <div class="popup-content">
+        <div class="popup-header"></div>
+        <div class="popup-body">
+            <h2 class="popup-title">👋 SEJA BEM VINDO (A)</h2>
+            <p class="popup-text welcome-text">
+                Para suporte, acesse o nosso canal oficial no WhatsApp!
+            </p>
+            <div class="social-links">
+                {% if whatsapp_link %}
+                    <a href="{{ whatsapp_link }}" target="_blank" class="social-button whatsapp-social">
+                        <i class="fa-brands fa-whatsapp"></i> WhatsApp
+                    </a>
+                {% endif %}
+            </div>
+            <button id="closePopup" class="popup-close-button">Continuar</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Função de fallback para cópia usando document.execCommand
+    function fallbackCopyTextToClipboard(text) {
+        let successful = false;
+        try {
+            // Cria um elemento de texto temporário
+            const textArea = document.createElement("textarea");
+            textArea.value = text;
+
+            // Estiliza para fora da tela
+            textArea.style.position = "fixed";
+            textArea.style.top = 0;
+            textArea.style.left = 0;
+            textArea.style.opacity = 0;
+
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+        } catch (err) {
+            console.error('Fallback: Falha ao copiar!', err);
+            successful = false;
+        }
+        return successful;
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        // Lógica de Animação para a Roleta
+        const rouletteImage = document.getElementById('rouletteImage');
+        if (rouletteImage) {
+            rouletteImage.classList.add('spinning');
+        }
+
+        // Lógica para Copiar Link - CORRIGIDO com Fallback
+        const copyButton = document.getElementById('copyLinkButton');
+        const linkElement = document.getElementById('invite-link-menu');
+
+        // Função unificada para gerenciar o feedback visual
+        function showCopyFeedback(button, success) {
+            const originalText = '<i class="fas fa-copy"></i> Copiar';
+            const originalBg = '#007bff';
+
+            if (success) {
+                button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+                button.style.backgroundColor = '#28a745'; // Verde para sucesso
+            } else {
+                // Se falhar, não mudamos para "Copiado", mas mostramos o alerta e voltamos a cor
+                button.innerHTML = originalText;
+                button.style.backgroundColor = originalBg;
+                alert('Erro ao copiar o link. Tente copiar manualmente.');
+                return;
+            }
+
+            // Volta ao estado original após 2 segundos
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.backgroundColor = originalBg;
+            }, 2000);
+        }
+
+
+        if (copyButton && linkElement) {
+            copyButton.addEventListener('click', function(e) {
+                const textToCopy = linkElement.innerText.trim();
+
+                if (textToCopy === '[Link Não Disponível]' || textToCopy === '' || textToCopy === null) {
+                    alert('Erro: O link de convite não está disponível.');
+                    return;
+                }
+
+                // Tenta usar a API moderna de Clipboard
+                if (navigator.clipboard && window.isSecureContext) {
+                    navigator.clipboard.writeText(textToCopy)
+                        .then(() => {
+                            showCopyFeedback(e.currentTarget, true);
+                        })
+                        .catch(err => {
+                            // Se a API moderna falhar, usa o fallback (execCommand)
+                            console.warn('Falha na API moderna de Clipboard. Tentando fallback.', err);
+                            const success = fallbackCopyTextToClipboard(textToCopy);
+                            showCopyFeedback(e.currentTarget, success);
+                        });
+                } else {
+                    // Usa o fallback diretamente se a API moderna não estiver disponível (HTTP)
+                    const success = fallbackCopyTextToClipboard(textToCopy);
+                    showCopyFeedback(e.currentTarget, success);
+                }
+            });
+        }
+
+        // Lógica do Pop-up de Boas-Vindas
+        const popup = document.getElementById('welcomePopup');
+        const closeButton = document.getElementById('closePopup');
+
+        // **MODIFICAÇÃO AQUI: Pop-up aparece sempre, sem localStorage**
+        if (popup) {
+            setTimeout(() => {
+                popup.style.display = 'flex';
+            }, 100);
+        }
+
+        // Fechar ao clicar no botão
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                popup.style.display = 'none';
+            });
+        }
+
+        // Fechar ao clicar fora do conteúdo
+        window.addEventListener('click', (event) => {
+            if (event.target === popup) {
+                popup.style.display = 'none';
+            }
+        });
+    });
+</script>
+
 {% endblock %}

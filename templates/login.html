@@ -4,27 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - REGARD</title>
+    <title>Login - neoenergia</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap');
-        /* Importa ícones do Font Awesome para o ícone de olho e WhatsApp */
+        /* Importa ícones do Font Awesome */
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
         :root {
-            /* Cores base do tema REGARD (Verde/Dourado/Fundo Claro) */
-            --cor-fundo-principal: #ffffff; 
-            --cor-card-fundo: rgba(255, 255, 255, 0.9);
-            --cor-borda-input: #e0e0e0;
-            --cor-placeholder: #616161;
-            --cor-texto-claro: #212121; 
-            --cor-texto-escuro: #212121;
-            /* Destaques REGARD */
+            /* Cores base do tema neoenergia (Dark Mode) */
+            --cor-fundo-principal: #121212; /* Fundo Preto Profundo */
+            --cor-card-fundo: rgba(30, 30, 30, 0.9); /* Cartão Escuro Translúcido */
+            --cor-borda-input: #444444;
+            --cor-placeholder: #aaaaaa;
+            --cor-texto-claro: #f0f0f0; /* Texto claro para fundo escuro */
+            --cor-texto-escuro: #f0f0f0; /* Texto principal claro */
+            /* Destaques neoenergia - Mantidos os originais para o contraste */
             --cor-destaque-1: #008000; /* Verde escuro (corporativo) */
             --cor-destaque-2: #ffcc00; /* Dourado/Amarelo Petróleo */
             --cor-botao-principal: linear-gradient(45deg, var(--cor-destaque-1), var(--cor-destaque-2)); 
         }
 
-        /* --- ESTILOS BASE (PADRÃO PARA DESKTOPS E TELAS MAIORES) --- */
+        /* --- ESTILOS BASE --- */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -34,7 +34,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--cor-fundo-principal);
+            background-color: var(--cor-fundo-principal); /* Aplicando Fundo Preto */
             color: var(--cor-texto-escuro);
             position: relative;
             overflow-x: hidden;
@@ -43,11 +43,11 @@
         }
 
         @keyframes fundoBrilho {
-            0% { background-color: #ffffff; }
-            100% { background-color: #f0f0f0; }
+            0% { background-color: #121212; }
+            100% { background-color: #212121; }
         }
 
-        /* Fundo com imagem de petróleo esmaecida */
+        /* Fundo com imagem de petróleo esmaecida (Escurecido para Dark Mode) */
         body::before {
             content: '';
             position: fixed;
@@ -59,17 +59,17 @@
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            opacity: 0.1;
+            opacity: 0.15; /* Maior opacidade para escurecer mais */
             z-index: -1;
-            filter: grayscale(100%) brightness(150%);
+            filter: grayscale(100%) brightness(50%); /* Escurecido drasticamente */
         }
 
-        /* Título REGARD - AGORA ESTÁTICO E SEM PISCAR */
+        /* Título neoenergia (Brilho Verde) */
         .title-platform {
             font-size: 4em; 
             font-weight: 700;
-            color: var(--cor-destaque-1); /* Uso do Verde principal (como na imagem) */
-            /* Text-shadow para criar o efeito de brilho suave e estático */
+            color: var(--cor-destaque-1); 
+            /* Text-shadow para criar o efeito de brilho suave verde (mantido) */
             text-shadow: 0 0 10px rgba(0, 128, 0, 0.7), 0 0 20px rgba(0, 128, 0, 0.5); 
             letter-spacing: 3px; 
             margin-bottom: 30px;
@@ -77,22 +77,19 @@
             position: relative;
             text-transform: uppercase;
             white-space: nowrap; 
-            /* REMOVIDO: animation: piscaDourado... */
         }
         
-        /* REMOVIDO: Keyframes piscaDourado e os pseudo-elementos ::before/::after com pulsoLuz */
-
         /* Card Principal */
         .content {
-            background: var(--cor-card-fundo);
+            background: var(--cor-card-fundo); /* Fundo escuro do cartão */
             backdrop-filter: blur(10px);
             padding: 50px;
             border-radius: 20px;
             text-align: center;
             width: 90%;
             max-width: 500px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border: 1px solid #ddd;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5); /* Sombra mais intensa */
+            border: 1px solid #333; /* Borda escura */
             position: relative;
             z-index: 1;
             animation: fadeIn 1.2s ease-out 0.5s backwards;
@@ -108,7 +105,7 @@
             margin-top: 0;
             margin-bottom: 30px;
             font-size: 2.5em;
-            color: var(--cor-destaque-1); /* Uso do verde principal */
+            color: var(--cor-destaque-1); 
             font-weight: 700;
             position: relative;
         }
@@ -118,7 +115,7 @@
             display: block;
             width: 50%;
             height: 4px;
-            background-color: var(--cor-destaque-2); /* Linha dourada sob o título */
+            background-color: var(--cor-destaque-2); 
             margin: 10px auto 0;
             border-radius: 2px;
         }
@@ -130,20 +127,28 @@
             text-align: left;
         }
 
+        /* Estilo da label com ícone */
         .form-group label {
-            display: block;
+            display: flex;
+            align-items: center;
             margin-bottom: 8px;
             font-weight: 600;
             color: var(--cor-texto-escuro); 
             font-size: 0.9em;
         }
 
+        .form-group label i {
+            margin-right: 8px;
+            font-size: 1.1em;
+            color: var(--cor-destaque-1);
+        }
+
         .auth-form input {
             width: 100%;
             padding: 14px 20px;
-            border: 2px solid var(--cor-borda-input);
+            border: 1px solid var(--cor-borda-input); 
             border-radius: 12px;
-            background-color: #f9f9f9; 
+            background-color: #282828; /* Fundo do input escuro */
             color: var(--cor-texto-escuro);
             font-size: 1.1em;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
@@ -157,6 +162,10 @@
         }
 
         /* Estilo do ícone de alternar senha */
+        .password-input-wrapper {
+            position: relative;
+        }
+        
         .toggle-password { 
             position: absolute; 
             right: 15px; 
@@ -166,6 +175,7 @@
             cursor: pointer; 
             transition: color 0.3s ease;
             font-size: 1.1em;
+            z-index: 10;
         }
         
         .toggle-password:hover {
@@ -177,20 +187,20 @@
             list-style: none;
             padding: 0;
             margin: 5px 0 0 0;
-            color: #dc3545; 
+            color: #ff6b6b; /* Vermelho claro para fundo escuro */
             font-size: 0.9em;
             font-weight: 500;
             text-align: left;
         }
 
-        /* Botão Principal (Entrar) */
+        /* Botão Principal (Entrar) - Mantido com o gradiente */
         .submit-button { 
             width: 100%;
             padding: 18px 20px;
             border: none;
             border-radius: 12px;
             background: var(--cor-botao-principal);
-            color: var(--cor-texto-escuro); 
+            color: #121212; /* Texto escuro no botão gradiente para alto contraste */
             font-size: 1.2em;
             font-weight: 700;
             cursor: pointer;
@@ -204,42 +214,37 @@
 
         @keyframes pulsoBotaoPetroleo {
             0% { transform: scale(1); box-shadow: 0 8px 25px rgba(0, 128, 0, 0.4); }
-            50% { transform: scale(1.02); box-shadow: 0 12px 35px rgba(255, 204, 0, 0.6); }
+            50% { transform: scale(1.01); box-shadow: 0 12px 35px rgba(255, 204, 0, 0.6); }
             100% { transform: scale(1); box-shadow: 0 8px 25px rgba(0, 128, 0, 0.4); }
         }
 
         .submit-button:hover {
-            transform: translateY(-4px) scale(1.01);
+            transform: translateY(-2px) scale(1.005);
             box-shadow: 0 10px 30px rgba(255, 204, 0, 0.6);
         }
 
-        /* Links de Navegação (Suporte e Cadastro) */
-        .login-link a, .support-link a {
+        /* Link de Cadastro */
+        .cadastro-link a {
             display: block;
             margin-top: 20px; 
             color: var(--cor-destaque-2);
             text-decoration: none;
             font-weight: 600;
             transition: color 0.3s ease, text-shadow 0.3s ease;
-            font-size: 1.1em;
-        }
-
-        .login-link a {
-            margin-top: 15px; 
             font-size: 1em;
+            padding-top: 10px;
         }
 
-        .login-link a:hover, .support-link a:hover {
+        .cadastro-link a:hover {
             color: var(--cor-destaque-1);
-            text-shadow: 0 0 10px var(--cor-destaque-1);
+            text-shadow: 0 0 5px var(--cor-destaque-1);
         }
 
         /* Efeitos de partículas de energia/óleo (Fundo) */
         .energia-particula {
             position: fixed;
-            background-color: var(--cor-destaque-2);
             border-radius: 50%;
-            box-shadow: 0 0 5px var(--cor-destaque-2);
+            box-shadow: 0 0 5px;
             animation: moveParticula 15s infinite linear, fadeParticula 5s infinite alternate;
             opacity: 0;
             z-index: 0;
@@ -272,12 +277,8 @@
                 padding: 0 10px; 
                 white-space: normal;
                 text-align: center;
-                /* Garante que o brilho se mantenha em mobile */
                 text-shadow: 0 0 8px rgba(0, 128, 0, 0.7), 0 0 15px rgba(0, 128, 0, 0.5); 
             }
-            
-            /* Remove os pulsos de luz para mobile (já que não existem mais) */
-            /* .title-platform::before, .title-platform::after { display: none; } */
 
             .content {
                 padding: 30px 20px; 
@@ -305,16 +306,11 @@
                 font-size: 1.1em;
                 letter-spacing: 1px;
             }
-
-            .login-link a, .support-link a {
-                margin-top: 20px;
-                font-size: 1em;
-            }
         }
     </style>
 </head>
 <body>
-    <div class="title-platform">REGARD</div>
+    <div class="title-platform">neoenergia</div>
     <div class="content">
         <div class="header">
             <h2>Acesse sua conta</h2> 
@@ -334,7 +330,7 @@
 
             <div class="form-group">
                 <label for="{{ form.username.id_for_label }}"><i class="fas fa-mobile-alt"></i> Número de Telefone:</label>
-                <div style="position: relative;">
+                <div class="password-input-wrapper">
                     {{ form.username }} 
                 </div>
                 {# Adiciona a exibição de erros do campo username #}
@@ -349,7 +345,7 @@
             
             <div class="form-group">
                 <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> Senha:</label>
-                <div style="position: relative;">
+                <div class="password-input-wrapper">
                     {{ form.password }} 
                     <i class="fas fa-eye toggle-password" id="togglePassword"></i>
                 </div>
@@ -366,19 +362,7 @@
             <button type="submit" class="submit-button">Entrar</button>
         </form>
         
-        <div class="support-link">
-            {% if whatsapp_link %}
-                <a href="{{ whatsapp_link }}" target="_blank">
-                    <i class="fab fa-whatsapp"></i> Suporte
-                </a>
-            {% else %}
-                <a href="#" onclick="alert('Link de Suporte não configurado.');">
-                    <i class="fab fa-whatsapp"></i> Suporte
-                </a>
-            {% endif %}
-        </div>
-        
-        <div class="login-link">
+        <div class="cadastro-link">
             <a href="{% url 'cadastro' %}">Não tem conta? Cadastre-se</a>
         </div>
     </div>
@@ -386,26 +370,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Lógica do botão de alternar senha (ícone de olho)
-            const setupPasswordToggle = (toggleId, inputId) => {
-                const toggle = document.querySelector(`#KZ{toggleId}`);
-                const input = document.querySelector(`#KZ{inputId}`);
-                
-                if (toggle && input) {
-                    // Verifica se o input é um campo de senha antes de adicionar o evento
-                    if(input.getAttribute('type') === 'password') {
-                        toggle.addEventListener('click', function (e) {
-                            const type = input.getAttribute('type') === 'password' ? 'text' : 'password';
-                            input.setAttribute('type', type);
-                            this.classList.toggle('fa-eye');
-                            this.classList.toggle('fa-eye-slash');
-                        });
-                    }
-                }
-            };
-
-            // Encontra o campo de senha do Django e aplica o toggle
             const passwordInput = document.querySelector('input[name="password"]');
-            if(passwordInput) setupPasswordToggle('togglePassword', passwordInput.id);
+            const toggle = document.getElementById('togglePassword');
+            
+            if (toggle && passwordInput) {
+                // Aplica a classe inicial (olho fechado) se o tipo for 'password'
+                if(passwordInput.getAttribute('type') === 'password') {
+                    toggle.classList.add('fa-eye');
+                } else {
+                    toggle.classList.add('fa-eye-slash');
+                }
+
+                toggle.addEventListener('click', function (e) {
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.classList.toggle('fa-eye');
+                    this.classList.toggle('fa-eye-slash');
+                });
+            }
 
             // Código para criar as partículas de energia/óleo (Efeito de fundo)
             const numParticulas = 30;
@@ -416,12 +398,12 @@
                 particula.classList.add('energia-particula');
                 
                 const size = Math.random() * 8 + 3;
-                particula.style.width = `KZ{size}px`;
-                particula.style.height = `KZ{size}px`;
+                particula.style.width = `${size}px`;
+                particula.style.height = `${size}px`;
                 particula.style.backgroundColor = i % 2 === 0 ? 'var(--cor-destaque-1)' : 'var(--cor-destaque-2)';
 
                 const delay = Math.random() * 10;
-                particula.style.animationDelay = `KZ{delay}s`;
+                particula.style.animationDelay = `${delay}s`;
 
                 // Variáveis CSS para a animação
                 particula.style.setProperty('--rand-x', Math.random() * 2 - 0.5);

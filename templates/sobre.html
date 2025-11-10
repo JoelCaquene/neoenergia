@@ -4,31 +4,187 @@
 {% block title %}Sobre{% endblock %}
 
 {% block content %}
-<div class="page-header">
-    <h1>Sobre a REGARD</h1>
-</div>
-<div class="page-content">
-    <div class="info-box">
-        <p>{{ history_text|safe }}</p>
+<div class="page-container">
+    <div class="page-header">
+        <h1>✨ Sobre a Neoenergia</h1>
+        <p class="subtitle">Conheça nossa história, missão e compromisso com o futuro.</p>
+    </div>
+
+    <div class="page-content">
+        <div class="info-card">
+            <i class="fas fa-info-circle card-icon"></i>
+            <h2 class="card-title">Nossa História e Propósito</h2>
+            <div class="text-content">
+                {# Conteúdo principal, mantido o filtro safe para renderizar HTML se necessário #}
+                <p>{{ history_text|safe }}</p> 
+            </div>
+            
+            <div class="key-points-grid">
+                <div class="key-point">
+                    <i class="fas fa-lightbulb"></i>
+                    <span>Inovação Contínua</span>
+                </div>
+                <div class="key-point">
+                    <i class="fas fa-users"></i>
+                    <span>Foco no Cliente</span>
+                </div>
+                <div class="key-point">
+                    <i class="fas fa-leaf"></i>
+                    <span>Sustentabilidade</span>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
+
 <style>
-    .page-header, .page-content {
-        background-color: #00004d;
-        padding: 20px;
-        margin: 20px;
-        border-radius: 10px;
+    /* ------------------------------------------------------------------- */
+    /* ESTILOS GERAIS E TIPOGRAFIA ELEGANTE (POPPINS) */
+    /* ------------------------------------------------------------------- */
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+    :root {
+        /* CORES ELEGANTES E CLEAN */
+        --color-bg-white: #ffffff;
+        --color-bg-light: #f8f9fa; /* Fundo do corpo */
+        --color-primary-blue: #007bff; /* Azul Sofisticado (Destaque) */
+        --color-accent-gold: #ffc107; /* Ouro/Amarelo Suave (Brilho) */
+        --color-text-dark: #343a40; /* Texto Escuro Elegante */
+        --color-text-muted: #6c757d; /* Texto Secundário */
+        --shadow-brilho: 0 4px 15px rgba(0, 0, 0, 0.05), 0 0 10px rgba(0, 123, 255, 0.1); /* Sombra suave de brilho */
+    }
+
+    body {
+        background-color: var(--color-bg-light); 
+        font-family: 'Poppins', sans-serif;
+        color: var(--color-text-dark);
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+    }
+    
+    .page-container {
+        max-width: 1000px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    /* ------------------------------------- */
+    /* CABEÇALHO DA PÁGINA */
+    /* ------------------------------------- */
+    .page-header {
+        text-align: center;
+        padding: 30px 0;
+        margin-bottom: 20px;
     }
     .page-header h1 {
-        color: #4CAF50;
+        font-size: 2.8rem;
+        font-weight: 700;
+        color: var(--color-primary-blue);
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        margin-bottom: 5px;
+        /* Brilho sutil no título */
+        text-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
     }
-    .info-box {
-        background-color: #1a1a4d;
+    .subtitle {
+        color: var(--color-text-muted);
+        font-size: 1.1rem;
+        font-weight: 400;
+    }
+
+    /* ------------------------------------- */
+    /* CARD DE INFORMAÇÕES (FUNDO BRANCO COM BRILHO) */
+    /* ------------------------------------- */
+    .page-content {
+        padding: 0;
+    }
+
+    .info-card {
+        background-color: var(--color-bg-white);
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: var(--shadow-brilho); /* O principal efeito de brilho e organização */
+        border: 1px solid rgba(0, 0, 0, 0.05);
+        transition: box-shadow 0.3s ease;
+    }
+    .info-card:hover {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1), 0 0 20px rgba(0, 123, 255, 0.2);
+    }
+
+    .card-icon {
+        font-size: 2.5rem;
+        color: var(--color-primary-blue);
+        margin-bottom: 15px;
+        display: block;
+        text-align: center;
+    }
+
+    .card-title {
+        font-size: 1.8rem;
+        font-weight: 600;
+        color: var(--color-text-dark);
+        border-bottom: 2px solid var(--color-primary-blue);
+        padding-bottom: 10px;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* Estilização do Conteúdo de Texto */
+    .text-content p {
+        font-size: 1.05rem;
+        color: var(--color-text-dark);
+        margin-bottom: 25px;
+        text-align: justify;
+    }
+
+    /* ------------------------------------- */
+    /* PONTOS CHAVE (ORGANIZAÇÃO EM GRID) */
+    /* ------------------------------------- */
+    .key-points-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(0, 123, 255, 0.1);
+    }
+
+    .key-point {
+        background-color: var(--color-bg-light);
         padding: 15px;
-        border-radius: 8px;
+        border-radius: 10px;
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--color-text-dark);
+        border-left: 5px solid var(--color-primary-blue);
+        transition: background-color 0.3s, transform 0.2s;
     }
-    .info-box p {
-        line-height: 1.5;
+    .key-point:hover {
+        background-color: #e9ecef;
+        transform: translateY(-3px);
     }
+    .key-point i {
+        font-size: 1.5rem;
+        color: var(--color-primary-blue);
+        margin-bottom: 8px;
+        display: block;
+    }
+    
+    /* Responsive adjustment for small screens */
+    @media (max-width: 600px) {
+        .page-header h1 {
+            font-size: 2.0rem;
+        }
+        .info-card {
+            padding: 20px;
+        }
+        .key-points-grid {
+             grid-template-columns: 1fr;
+        }
+    }
+
 </style>
 {% endblock %}

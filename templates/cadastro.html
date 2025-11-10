@@ -4,27 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cadastro - REGARD</title>
+    <title>Cadastro - NEOENERGIA</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap');
         @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 
         :root {
-            /* Cores REGARD (Baseado no Arquivo 1) */
-            --cor-fundo-principal: #f8f9fa; /* Fundo muito claro/quase branco */
-            --cor-card-fundo: rgba(255, 255, 255, 0.95); /* Fundo branco levemente transparente */
-            --cor-borda-input: #cfd8dc;
-            --cor-placeholder: #78909c;
-            --cor-texto-claro: #263238; /* Texto escuro quase preto */
-            --cor-texto-escuro: #263238;
+            /* Cores NEOENERGIA (Adaptadas para Tema Escuro) */
+            --cor-fundo-principal: #121212; /* Fundo Preto */
+            --cor-card-fundo: rgba(30, 30, 30, 0.9); /* Fundo Escuro Transparente */
+            --cor-borda-input: #444; /* Borda cinza escuro */
+            --cor-placeholder: #777;
+            --cor-texto-claro: #f0f0f0; /* Texto claro */
+            --cor-texto-escuro: #fff; /* Texto mais claro */
             
-            --cor-destaque-1: #00a859; /* Verde VIBRANTE e corporativo (F1) */
-            --cor-destaque-2: #ffc107; /* Amarelo/Dourado Forte (F1) */
+            --cor-destaque-1: #00a859; /* Verde Corporativo (Mantido) */
+            --cor-destaque-2: #ffc107; /* Amarelo/Dourado Forte (Mantido) */
             --cor-botao-cadastro: linear-gradient(45deg, var(--cor-destaque-1), var(--cor-destaque-2));
-            --cor-shadow-card: 0 15px 45px rgba(0, 0, 0, 0.15);
+            --cor-shadow-card: 0 15px 45px rgba(0, 0, 0, 0.4); /* Sombra mais forte no fundo escuro */
         }
 
-        /* ESTILOS BASE (PADRÃO PARA DESKTOPS E TELAS MAIORES) - Arquivo 1 */
+        /* ESTILOS BASE (PADRÃO PARA DESKTOPS E TELAS MAIORES) */
         body {
             font-family: 'Montserrat', sans-serif;
             margin: 0;
@@ -34,14 +34,14 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            background-color: var(--cor-fundo-principal);
+            background-color: var(--cor-fundo-principal); /* Fundo Preto */
             color: var(--cor-texto-escuro);
             position: relative;
             overflow-x: hidden;
             overflow-y: auto;
         }
 
-        /* Fundo Fascinante: Imagem de ilustrações abstratas - Arquivo 1 */
+        /* Fundo Fascinante: Ilustração de Energia/Tecnologia com Brilho Suave */
         body::before {
             content: '';
             position: fixed;
@@ -49,22 +49,25 @@
             left: 0;
             width: 100%;
             height: 100%;
-            /* Ilustração mais abstrata e tecnológica */
-            background-image: url("https://images.unsplash.com/photo-1549491753-15794ed3c70c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
+            /* Ilustração de circuito, energia ou linhas abstratas */
+            background-image: url("https://images.unsplash.com/photo-1598284725350-b040a4305886?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D");
             background-size: cover;
             background-position: center;
             background-attachment: fixed;
-            opacity: 0.12; /* Sutil */
+            opacity: 0.2; /* Opacidade aumentada para o tema escuro */
             z-index: -1;
-            filter: grayscale(100%) brightness(120%);
+            /* Filtro para dar um tom suave e manter o fundo escuro */
+            filter: grayscale(80%) brightness(80%) contrast(150%);
+            transition: opacity 1s ease;
         }
 
-        /* Título Dourado Atraente - Arquivo 1 */
+        /* Título NEOENERGIA - Adaptado para o Tema Escuro e Responsivo */
         .title-platform {
             font-size: 4.5em; 
             font-weight: 800;
-            color: var(--cor-destaque-1); /* Cor primária */
-            text-shadow: 0 0 10px rgba(0, 168, 89, 0.5), 0 0 20px rgba(255, 193, 7, 0.4);
+            color: var(--cor-destaque-2); /* Dourado/Amarelo */
+            /* Brilho neon sutil */
+            text-shadow: 0 0 15px rgba(255, 193, 7, 0.6), 0 0 30px rgba(0, 168, 89, 0.4);
             letter-spacing: 5px; 
             margin-bottom: 40px;
             padding: 0 20px;
@@ -80,17 +83,17 @@
             100% { transform: scale(1); }
         }
 
-        /* Card de Cadastro com Fundo "Glassmorphism" - Arquivo 1 */
+        /* Card de Cadastro com Fundo "Dark Glassmorphism" */
         .content {
             background: var(--cor-card-fundo);
-            backdrop-filter: blur(15px); /* Efeito de vidro borrado */
+            backdrop-filter: blur(10px); /* Efeito de vidro borrado */
             padding: 50px;
             border-radius: 25px;
             text-align: center;
             width: 90%;
             max-width: 550px;
             box-shadow: var(--cor-shadow-card);
-            border: 1px solid rgba(255, 255, 255, 0.5); /* Borda sutil */
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Borda sutil e clara */
             position: relative;
             z-index: 1;
             animation: fadeIn 1.2s ease-out 0.3s backwards;
@@ -112,39 +115,38 @@
             padding-bottom: 5px;
         }
         
-        /* Classe do Arquivo 2 renomeada para a do Arquivo 1 */
         .form-group, .input-group { 
             position: relative;
-            margin-bottom: 25px; /* Aumentado */
+            margin-bottom: 25px;
             text-align: left;
         }
 
         .form-group label, .input-group label {
             display: block;
             margin-bottom: 6px;
-            font-weight: 700; /* Mais ousado */
+            font-weight: 700;
             color: var(--cor-texto-escuro); 
             font-size: 0.95em;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
         
-        /* Estilização dos Inputs - Adaptado do Arquivo 1 */
+        /* Estilização dos Inputs - Adaptado para o Tema Escuro */
         .auth-form input[type="text"], 
         .auth-form input[type="password"], 
         .auth-form input[type="tel"] {
             width: 100%;
-            padding: 15px 20px; /* Aumentado */
-            border: 2px solid var(--cor-borda-input); /* Mais espesso */
-            border-radius: 10px; /* Mais arredondado */
-            background-color: #f0f3f5; /* Fundo do input levemente cinza */
+            padding: 15px 20px;
+            border: 2px solid var(--cor-borda-input); 
+            border-radius: 10px;
+            background-color: #242424; /* Fundo do input escuro */
             color: var(--cor-texto-escuro);
-            font-size: 1.1em; /* Maior */
+            font-size: 1.1em;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             box-sizing: border-box;
         }
         
-        /* Placeholder style - Arquivo 1 */
+        /* Placeholder style */
         .auth-form input::placeholder {
             color: var(--cor-placeholder); 
             opacity: 1;
@@ -153,11 +155,11 @@
         .auth-form input:focus {
             outline: none;
             border-color: var(--cor-destaque-1); 
-            box-shadow: 0 0 15px rgba(0, 168, 89, 0.3);
-            background-color: #fff;
+            box-shadow: 0 0 15px rgba(0, 168, 89, 0.4);
+            background-color: #333333; /* Fundo do input mais escuro ao focar */
         }
 
-        /* Ícone de Visualização de Senha - Arquivo 1 */
+        /* Ícone de Visualização de Senha */
         .toggle-password { 
             position: absolute; 
             right: 15px; 
@@ -165,19 +167,17 @@
             cursor: pointer; 
             transition: color 0.3s ease;
             font-size: 1.1em;
-            /* Posição calculada para alinhar com o input do Arquivo 1 */
-            top: 50%; /* Posição temporária */
+            top: 50%;
             transform: translateY(-50%); 
         }
         
         .form-group.input-group-with-icon input {
-            padding-right: 50px; /* Espaço para o ícone */
+            padding-right: 50px;
         }
         
-        /* Ajuste Fino para o alinhamento (Baseado no Arquivo 1) */
+        /* Ajuste Fino para o alinhamento */
         .form-group .toggle-password {
-            /* Ajuste para centralizar o ícone com o padding do input (15px) */
-            top: calc(30% + 15px); /* Ajuste baseado na altura da label (30%) e padding do input (15px) */
+            top: calc(30% + 15px);
             transform: translateY(-50%); 
         }
         
@@ -185,12 +185,12 @@
             color: var(--cor-destaque-1);
         }
 
-        /* Estilos para erros (messages do Django no Arquivo 2) - Copiado do Arquivo 1 */
+        /* Estilos para erros (messages do Django) */
         .errorlist, .messages { 
             list-style: none;
             padding: 0;
             margin: 5px 0 20px 0;
-            color: #e74c3c; /* Vermelho vibrante para erros */
+            color: #ff5e5e; /* Vermelho para erros no tema escuro */
             font-size: 0.9em;
             font-weight: 600;
             text-align: left;
@@ -207,18 +207,18 @@
         }
         
         .messages li.error, .errorlist li { /* Estilo de erro */
-            background-color: #fceae9;
-            color: #c0392b;
-            border: 1px solid #c0392b;
+            background-color: #3b1b1b;
+            color: #ff5e5e;
+            border: 1px solid #ff5e5e;
         }
         
         .messages li.success {
-            background-color: #e6f7ef;
+            background-color: #1b3b1b;
             color: var(--cor-destaque-1);
             border: 1px solid var(--cor-destaque-1);
         }
 
-        /* Botão de Cadastro Estilizado com Gradiente e Sombra - Arquivo 1 */
+        /* Botão de Cadastro Estilizado com Gradiente e Sombra */
         .submit-button { 
             width: 100%;
             padding: 18px 20px;
@@ -242,40 +242,29 @@
             filter: brightness(1.1);
         }
 
-        /* Links e Suporte - Arquivo 1 */
-        .support-link, .login-link {
+        /* Links */
+        .login-link {
             text-align: center;
-        }
-
-        .support-link a {
-            display: inline-block;
-            margin-top: 30px;
-            margin-bottom: 10px;
-            color: var(--cor-destaque-1);
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 1.1em;
-            padding: 8px 15px;
-            border: 2px solid var(--cor-destaque-1);
-            border-radius: 8px;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            margin-top: 25px; /* Ajuste para compensar a remoção do link do WhatsApp */
         }
         
-        .support-link a:hover {
-            background-color: var(--cor-destaque-1);
-            color: #fff;
-        }
-
         .login-link a {
             display: block;
-            margin-top: 15px;
             color: var(--cor-texto-escuro);
-            text-decoration: underline;
+            text-decoration: none;
             font-weight: 600;
             font-size: 1em;
+            padding: 10px 0;
+            border-bottom: 2px solid var(--cor-destaque-2); /* Destaque visual */
+            display: inline-block;
+            transition: color 0.3s ease;
         }
         
-        /* Replicando as partículas de fundo do Arquivo 1 */
+        .login-link a:hover {
+            color: var(--cor-destaque-2);
+        }
+
+        /* Partículas de Fundo: Adaptadas para o brilho do tema escuro */
         .energia-particula {
             position: fixed;
             border-radius: 50%;
@@ -284,7 +273,7 @@
         }
         
         /* ---------------------------------------------------------------------- */
-        /* MEDIA QUERY PARA TELAS PEQUENAS (MOBILE) - Arquivo 1 */
+        /* MEDIA QUERY PARA TELAS PEQUENAS (MOBILE) */
         /* ---------------------------------------------------------------------- */
         @media (max-width: 600px) {
             
@@ -296,11 +285,15 @@
             }
 
             .title-platform {
-                font-size: 3.5em; /* Menor para caber */
-                letter-spacing: 3px;
+                font-size: 3em; /* Menor para caber perfeitamente */
+                letter-spacing: 2px;
                 margin-bottom: 25px;
                 white-space: normal;
                 text-align: center;
+                /* Resposta a telas pequenas sem se desfazer */
+                word-break: break-word; 
+                line-height: 1.1;
+                text-shadow: 0 0 10px rgba(255, 193, 7, 0.4), 0 0 20px rgba(0, 168, 89, 0.3);
             }
             
             .content {
@@ -338,7 +331,7 @@
     </style>
 </head>
 <body>
-    <div class="title-platform">REGARD</div>
+    <div class="title-platform">NEOENERGIA</div>
     
     <div class="content">
         <div class="header">
@@ -348,7 +341,6 @@
         {% if messages %}
             <ul class="messages">
                 {% for message in messages %}
-                    {# O Django adiciona as tags como 'error', 'success', etc. #}
                     <li class="{{ message.tags }}"><i class="fas fa-exclamation-circle"></i> {{ message }}</li>
                 {% endfor %}
             </ul>
@@ -357,7 +349,7 @@
         <form method="post" class="auth-form">
             {% csrf_token %}
             
-            {# Exibição de erros que não são de campo (lógica do Arquivo 2) #}
+            {# Erros que não são de campo (lógica do Django mantida) #}
             {% if form.non_field_errors %}
                 <ul class="errorlist">
                     {% for error in form.non_field_errors %}
@@ -366,11 +358,10 @@
                 </ul>
             {% endif %}
         
-            {# CAMPO: Número de Telefone #}
+            {# CAMPO: Número de Telefone (lógica do Django mantida) #}
             <div class="input-group">
                 <label for="{{ form.phone_number.id_for_label }}"><i class="fas fa-mobile-alt"></i> Número de Telefone:</label>
                 {{ form.phone_number }}
-                {# Adiciona a exibição de erros do campo phone_number (lógica do Arquivo 2) #}
                 {% if form.phone_number.errors %}
                     <ul class="errorlist">
                         {% for error in form.phone_number.errors %}
@@ -380,12 +371,11 @@
                 {% endif %}
             </div>
             
-            {# CAMPO: Senha #}
+            {# CAMPO: Senha (lógica do Django mantida) #}
             <div class="input-group input-group-with-icon">
                 <label for="{{ form.password.id_for_label }}"><i class="fas fa-lock"></i> Senha:</label>
                 {{ form.password }}
                 <i class="fas fa-eye toggle-password" id="togglePassword"></i>
-                {# Adiciona a exibição de erros do campo password (lógica do Arquivo 2) #}
                 {% if form.password.errors %}
                     <ul class="errorlist">
                         {% for error in form.password.errors %}
@@ -395,12 +385,11 @@
                 {% endif %}
             </div>
             
-            {# CAMPO: Confirme a Senha #}
+            {# CAMPO: Confirme a Senha (lógica do Django mantida) #}
             <div class="input-group input-group-with-icon">
                 <label for="{{ form.confirm_password.id_for_label }}"><i class="fas fa-lock"></i> Confirme a Senha:</label>
                 {{ form.confirm_password }}
                 <i class="fas fa-eye toggle-password" id="togglePasswordConfirm"></i>
-                {# Adiciona a exibição de erros do campo confirm_password (lógica do Arquivo 2) #}
                 {% if form.confirm_password.errors %}
                     <ul class="errorlist">
                         {% for error in form.confirm_password.errors %}
@@ -410,11 +399,10 @@
                 {% endif %}
             </div>
             
-            {# CAMPO: Código de Convite #}
+            {# CAMPO: Código de Convite (lógica do Django mantida) #}
             <div class="input-group">
                 <label for="{{ form.invited_by_code.id_for_label }}"><i class="fas fa-user-plus"></i> Código de Convite (Opcional):</label>
                 {{ form.invited_by_code }}
-                {# Adiciona a exibição de erros do campo invited_by_code (lógica do Arquivo 2) #}
                 {% if form.invited_by_code.errors %}
                     <ul class="errorlist">
                         {% for error in form.invited_by_code.errors %}
@@ -424,21 +412,9 @@
                 {% endif %}
             </div>
             
-            <button type="submit" class="submit-button"><i class="fas fa-handshake"></i> **Cadastrar Agora**</button>
+            <button type="submit" class="submit-button"><i class="fas fa-bolt"></i> **Cadastrar Agora**</button>
         </form>
 
-        <div class="support-link">
-            {% if config.link_apoio_whatsapp %}
-                <a href="{{ config.link_apoio_whatsapp }}" target="_blank">
-                    <i class="fab fa-whatsapp"></i> **Apoio ao Cliente**
-                </a>
-            {% else %}
-                <a href="#">
-                    <i class="fab fa-whatsapp"></i> **Apoio ao Cliente**
-                </a>
-            {% endif %}
-        </div>
-        
         <div class="login-link">
             <a href="{% url 'login' %}">Já tem conta? **Fazer Login**</a>
         </div>
@@ -446,14 +422,12 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Lógica do botão de alternar senha (adaptada para a renderização do Django e IDs do Arquivo 2)
+            // Lógica do botão de alternar senha (mantida)
             const setupPasswordToggle = (toggleId, inputName) => {
                 const toggle = document.getElementById(toggleId);
-                // Usamos o seletor de input com o atributo name, que é mais confiável em forms Django
-                const input = document.querySelector(`input[name="KZ{inputName}"]`);
+                const input = document.querySelector(`input[name="${inputName}"]`);
                 
                 if (toggle && input) {
-                    // Adiciona a classe inicial 'fa-eye' do Arquivo 1
                     toggle.classList.add('fa-eye');
                 
                     toggle.addEventListener('click', function (e) {
@@ -465,21 +439,20 @@
                 }
             };
 
-            // Mapeando IDs do ícone (Arquivo 1) para Nomes dos campos (Arquivo 2)
+            // Mapeando IDs do ícone para Nomes dos campos (lógica mantida)
             setupPasswordToggle('togglePassword', 'password');
             setupPasswordToggle('togglePasswordConfirm', 'confirm_password');
 
-            // Script para preencher o campo de convite ao carregar a página (Lógica do Arquivo 1, mas com nome do campo Arquivo 2)
+            // Script para preencher o campo de convite ao carregar a página (lógica mantida)
             const urlParams = new URLSearchParams(window.location.search);
             const conviteCode = urlParams.get('convite');
             const invitationInput = document.querySelector('input[name="invited_by_code"]');
             
-            // Verifica se o campo está vazio antes de preencher
             if (conviteCode && invitationInput && invitationInput.value === '') {
                 invitationInput.value = conviteCode;
             }
 
-            // --- Lógica das Partículas Dinâmicas (Fundo) - Copiado do Arquivo 1 ---
+            // --- Lógica das Partículas Dinâmicas (Fundo) - Mantida com cores adaptadas ---
             const numParticulas = 40; 
             const body = document.body;
             const styleSheet = document.createElement('style');
@@ -490,11 +463,11 @@
                 particula.classList.add('energia-particula');
                 
                 const size = Math.random() * 6 + 2; 
-                particula.style.width = `KZ{size}px`;
-                particula.style.height = `KZ{size}px`;
+                particula.style.width = `${size}px`;
+                particula.style.height = `${size}px`;
                 // Usa as cores do Arquivo 1
                 particula.style.backgroundColor = i % 2 === 0 ? 'var(--cor-destaque-1)' : 'var(--cor-destaque-2)';
-                particula.style.boxShadow = `0 0 8px 3px KZ{i % 2 === 0 ? 'var(--cor-destaque-1)' : 'var(--cor-destaque-2)'}`;
+                particula.style.boxShadow = `0 0 8px 3px ${i % 2 === 0 ? 'var(--cor-destaque-1)' : 'var(--cor-destaque-2)'}`;
 
 
                 const delay = Math.random() * 12; 
@@ -506,22 +479,22 @@
                 const endX = Math.random() * 100;
                 const endY = Math.random() * 100;
 
-                // Cria o keyframe dinâmico para cada partícula (como no Arquivo 1)
-                const keyframesName = `moveParticula-KZ{i}`;
+                // Cria o keyframe dinâmico para cada partícula
+                const keyframesName = `moveParticula-${i}`;
                 const keyframes = `
-                    @keyframes KZ{keyframesName} {
-                        0% { transform: translate(KZ{startX}vw, KZ{startY}vh); opacity: 0; }
+                    @keyframes ${keyframesName} {
+                        0% { transform: translate(${startX}vw, ${startY}vh); opacity: 0; }
                         50% { opacity: 0.5; }
-                        100% { transform: translate(KZ{endX}vw, KZ{endY}vh); opacity: 0; }
+                        100% { transform: translate(${endX}vw, ${endY}vh); opacity: 0; }
                     }
                 `;
                 styleSheet.sheet.insertRule(keyframes, styleSheet.sheet.cssRules.length);
 
                 particula.style.animationName = keyframesName;
-                particula.style.animationDuration = `KZ{duration}s`;
+                particula.style.animationDuration = `${duration}s`;
                 particula.style.animationIterationCount = `infinite`;
                 particula.style.animationTimingFunction = `linear`;
-                particula.style.animationDelay = `KZ{delay}s`;
+                particula.style.animationDelay = `${delay}s`;
 
                 body.appendChild(particula);
             }

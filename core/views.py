@@ -102,6 +102,8 @@ def download_app(request):
     return redirect('https://seulinkdedownload.com')
 # --- FIM DA NOVA FUNÇÃO ---
 
+# 🎯 FUNÇÃO MENU (ALTERADA APENAS AQUI)
+@login_required
 def menu(request):
     user_level = None
     levels = Level.objects.all().order_by('deposit_value')
@@ -118,11 +120,16 @@ def menu(request):
         whatsapp_link = '#'
         telegram_link = '#' # Valor padrão se as configurações não existirem
 
+    # --- NOVO: Construção do Link de Convite Absoluto para o Menu ---
+    invite_link = request.build_absolute_uri(reverse('cadastro')) + f'?invite={request.user.invite_code}'
+    # -----------------------------------------------------------------
+
     context = {
         'user_level': user_level,
         'levels': levels,
         'whatsapp_link': whatsapp_link,
         'telegram_link': telegram_link, # Passando o link do Telegram para o template
+        'invite_link': invite_link, # NOVO: Passando o link de convite para o template
     }
     return render(request, 'menu.html', context)
 
