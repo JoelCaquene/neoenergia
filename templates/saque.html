@@ -59,11 +59,10 @@
                     {# NOVO BLOQUEIO - Mais Direto e Personalizado #}
                     <div class="card-message-overlay-new">
                         <i class="fas fa-lock-open-alt"></i> {# Ícone mais moderno #}
-                        <h2>Levantamento Temporariamente Indisponível</h2>
+                        <h2>EDITA AS SUAS CORDENADAS BANCÁRIAS, PARA TER ACESSO A SAQUÊS</h2>
                         <p>O seu pedido de levantamento não pode ser processado agora. Verifique as condições abaixo:</p>
                         <ul>
-                            {% if not has_bank_details %}<li><i class="fas fa-user-shield"></i> **Dados de Pagamento Pendentes.** Por favor, configure seus detalhes bancários no Perfil.</li>{% endif %}
-                            {% if already_withdrawn_today %}<li><i class="fas fa-calendar-times"></i> **Limite Diário Atingido.** Só é permitido 1 saque por dia.</li>{% endif %}
+                       
                             {% if not is_time_allowed %}<li><i class="fas fa-clock"></i> **Horário:** Saques são processados das 09:00h às 18:00h (GMT+1).</li>{% endif %}
                             <li><i class="fas fa-search-dollar"></i> **Mínimo por Levantamento:** {{ min_withdrawal_amount|default:"2000.00" }} KZ.</li>
                         </ul>
