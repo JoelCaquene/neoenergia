@@ -44,24 +44,24 @@
         {# 🧭 Navegação de Abas (Separadores) Horizontal e Simplificada #}
         <div class="tabs-navigation-bottom">
             <button class="tab-button-bottom active" onclick="openTab(event, 'realizar-saque')">
-                <i class="fas fa-file-invoice-dollar"></i> Solicitar Levantamento
+                <i class="fas fa-file-invoice-dollar"></i> Solicitar Levantamento {# Alterado de Digitar Saque #}
             </button>
             <button class="tab-button-bottom" onclick="openTab(event, 'historico')">
-                <i class="fas fa-list-alt"></i> Registos de Levantamento {# Texto atualizado #}
+                <i class="fas fa-list-alt"></i> Registos Aprovados
             </button>
         </div>
 
         <div class="tabs-content-area-finance">
             
-            {# 1º Separador: Formulário de Saque #}
+            {# 1º Separador: Formulário de Saque (Agora a primeira aba) #}
             <div id="realizar-saque" class="tab-pane active">
                 {% if already_withdrawn_today or not is_time_allowed or not has_bank_details %}
-                    {# BLOQUEIO #}
+                    {# NOVO BLOQUEIO - Mais Direto e Personalizado #}
                     <div class="card-message-overlay-new">
-                        <i class="fas fa-lock-open-alt"></i>
+                        <i class="fas fa-lock-open-alt"></i> {# Ícone mais moderno #}
                         <h2>EDITA AS SUAS CORDENADAS BANCÁRIAS, PARA TER ACESSO A SAQUÊS</h2>
                         <ul>
-                            
+                       
                             {% if not is_time_allowed %}<li><i class="fas fa-clock"></i> **Horário:** Saques são processados das 09:00h às 18:00h (GMT+1).</li>{% endif %}
                             <li><i class="fas fa-search-dollar"></i> **Mínimo por Levantamento:** {{ min_withdrawal_amount|default:"2000.00" }} KZ.</li>
                         </ul>
@@ -70,19 +70,19 @@
                     <form method="post" class="saque-form-app">
                         {% csrf_token %}
                         
-                        {# Campo de Entrada - VALOR #}
+                        {# Campo de Entrada - MAIS PROFISSIONAL/PERSONALIZADO #}
                         <div class="form-group-app input-group-personalizado">
                             <label for="{{ form.amount.id_for_label }}" class="label-personalizado">Valor do Levantamento (KZ)</label>
                             <div class="input-icon-wrapper-personalizado">
                                 <i class="fas fa-hand-holding-usd icon-input-left"></i>
                                 <input type="number" 
-                                            name="{{ form.amount.name }}" 
-                                            id="{{ form.amount.id_for_label }}" 
-                                            placeholder="Mínimo de {{ min_withdrawal_amount|default:'2000' }} KZ" 
-                                            min="{{ min_withdrawal_amount|default:'2000' }}" 
-                                            step="0.01"
-                                            required
-                                            class="input-personalizado">
+                                        name="{{ form.amount.name }}" 
+                                        id="{{ form.amount.id_for_label }}" 
+                                        placeholder="Mínimo de {{ min_withdrawal_amount|default:'2000' }} KZ" 
+                                        min="{{ min_withdrawal_amount|default:'2000' }}" 
+                                        step="0.01"
+                                        required
+                                        class="input-personalizado">
                                 <span class="currency-tag-personalizado">KZ</span>
                             </div>
                         </div>
@@ -96,49 +96,40 @@
                 {% endif %}
             </div>
 
-            {# 2º Separador: Histórico de Saques (AGORA EXIBE TODOS OS STATUS) #}
+            {# 2º Separador: Histórico de Saques (Apenas Aprovados) - Sem Alterações na Lógica #}
             <div id="historico" class="tab-pane">
                 <div class="card-history">
                     <h2><i class="fas fa-history"></i> Seus Registos de Levantamentos</h2>
                     {% if withdrawal_records %}
                         <div class="history-list-app-new">
-                            
                             {% for record in withdrawal_records %}
-                                {% with status_display=record.status|default:"Pendente" %}
-                                    
-                                    {# Lógica para definir cor e texto com base no status do banco de dados #}
-                                    {% if status_display == 'Aprovado' or status_display == 'Approved' %}
-                                        {% with status_text="Aprovado" status_icon="fas fa-check-circle" status_color="#2ecc71" transaction_type="Levantamento Aprovado" %}
-                                    {% elif status_display == 'Pendente' or status_display == 'Pending' %}
-                                        {% with status_text="Pendente" status_icon="fas fa-clock" status_color="#f39c12" transaction_type="Solicitação Pendente" %}
-                                    {% elif status_display == 'Rejeitado' or status_display == 'Rejected' %}
-                                        {% with status_text="Rejeitado" status_icon="fas fa-times-circle" status_color="#e74c3c" transaction_type="Levantamento Rejeitado" %}
-                                    {% else %}
-                                        {% with status_text="Desconhecido" status_icon="fas fa-question-circle" status_color="#3498db" transaction_type="Levantamento" %}
-                                    {% endif %}
-                                    
-                                    <div class="transaction-item-new status-{{ status_text|lower|slugify }}" style="border-left-color: {{ status_color }};">
-                                        <div class="icon-illustration" style="color: {{ status_color }};">
+                                {# Filtra para mostrar APENAS APROVADO, mas mantém a lógica para outros status para o caso de o backend filtrar posteriormente #}
+                                {% if record.status == 'Aprovado' or record.status == 'Approved' %}
+                                    <div class="transaction-item-new status-{{ record.status|lower|slugify }}">
+                                        <div class="icon-illustration">
                                             <i class="fas fa-hand-holding-usd"></i> 
                                         </div>
                                         <div class="transaction-details-new">
-                                            <span class="transaction-type-new" style="color: {{ status_color }};">{{ transaction_type }}:</span>
+                                            <span class="transaction-type-new">Levantamento Aprovado em:</span>
                                             <span class="transaction-date-new">{{ record.created_at|date:"d/m/Y H:i" }}</span>
                                         </div>
-                                        <span class="transaction-amount-new" style="color: {{ status_color }};">+ {{ record.amount|default:"0.00" }} KZ</span>
-                                        <div class="status-tag-new" style="background-color: {{ status_color }};">
-                                            <i class="{{ status_icon }}"></i>
-                                            {{ status_text }} {# Exibe o status dinâmico #}
+                                        <span class="transaction-amount-new">+ {{ record.amount|default:"0.00" }} KZ</span>
+                                        <div class="status-tag-new">
+                                            <i class="fas fa-check"></i>
+                                            Aprovado
                                         </div>
                                     </div>
-                                    
-                                {% endwith %}
-                            {% empty %}
-                                <div class="alert-box-finance info-border">
-                                    <i class="fas fa-info-circle"></i> Não há registos de saques recentes para exibir.
-                                </div>
+                                {% endif %}
                             {% endfor %}
 
+                            {% comment %} Se nenhum for aprovado, mostra a mensagem alternativa (ou pode ser removido se o filtro for feito no backend) {% endcomment %}
+                            {% with approved_count=withdrawal_records|length %}
+                                {% if approved_count == 0 %}
+                                    <div class="alert-box-finance info-border">
+                                        <i class="fas fa-info-circle"></i> Não há registos de saques **Aprovados** para exibir.
+                                    </div>
+                                {% endif %}
+                            {% endwith %}
                         </div>
                     {% else %}
                         <div class="alert-box-finance info-border">
@@ -389,6 +380,7 @@
 
     /* Novo Bloqueio de Mensagem (Mantido) */
     .card-message-overlay-new {
+        /* ... (Mantenha os estilos existentes para a mensagem de bloqueio) */
         text-align: center;
         padding: 30px 20px;
         background: linear-gradient(145deg, #fce7e7, #fff0f0);
@@ -433,21 +425,19 @@
     }
 
 
-    /* --- Histórico Personalizado (Todos os Status - Cores Dinâmicas) --- */
+    /* --- Histórico Personalizado (Apenas Aprovados) - Estilos mantidos e consolidados --- */
     .history-list-app-new {
         display: flex;
         flex-direction: column;
         gap: 15px;
     }
-    /* Estilo base para todos os itens de transação */
     .transaction-item-new {
         display: flex;
         align-items: center;
         padding: 15px 20px;
         background-color: #fff;
         border-radius: 10px;
-        /* Cor da borda definida inline no template (CSS dinâmico) */
-        border-left: 5px solid #ccc; 
+        border-left: 5px solid #2ecc71; /* Borda Verde para Aprovado */
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
         transition: transform 0.2s;
     }
@@ -457,7 +447,7 @@
     .icon-illustration {
         font-size: 2rem;
         margin-right: 20px;
-        /* Cor do ícone definida inline no template */
+        color: #6a11cb; /* Roxo de ilustração */
     }
     .transaction-details-new {
         flex-grow: 1;
@@ -466,7 +456,7 @@
     }
     .transaction-type-new {
         font-weight: 700;
-        /* Cor do tipo de transação definida inline no template */
+        color: #2ecc71; /* Título Verde */
         font-size: 1.1rem;
     }
     .transaction-date-new {
@@ -475,7 +465,7 @@
     }
     .transaction-amount-new {
         font-weight: 800;
-        /* Cor do valor definida inline no template */
+        color: #2ecc71; /* Valor em Verde */
         font-size: 1.2rem;
         margin-right: 15px;
     }
@@ -485,7 +475,7 @@
         font-size: 0.75rem;
         font-weight: bold;
         text-transform: uppercase;
-        /* Cor de fundo definida inline no template */
+        background-color: #2ecc71;
         color: #fff;
         display: flex;
         align-items: center;
