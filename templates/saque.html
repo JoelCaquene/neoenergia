@@ -111,38 +111,43 @@
                         <div class="history-list-app-new">
                             
                             {% for record in withdrawal_records %}
-                                {# Normaliza o status para usar em classes CSS e lógica de comparação #}
+                                {# === LÓGICA DE EXIBIÇÃO DO STATUS AQUI === #}
                                 {% with status_normalized=record.status|lower %}
-                                
-                                    {# Mapeamento de Status para Português e Ícone #}
-                                    {% if status_normalized == 'pending' %}
-                                        {% with status_texto="Pendente" status_icone="fas fa-hourglass-half" %}
-                                    {% elif status_normalized == 'aprovado' or status_normalized == 'approved' %}
-                                        {% with status_texto="Aprovado" status_icone="fas fa-check-circle" %}
-                                    {% elif status_normalized == 'rejeitado' or status_normalized == 'rejected' %}
-                                        {% with status_texto="Rejeitado" status_icone="fas fa-times-circle" %}
-                                    {% else %}
-                                        {% with status_texto="Desconhecido" status_icone="fas fa-question-circle" status_normalized="unknown" %} {# Fallback para status 'unknown' para a classe CSS #}
-                                    {% endif %}
-                                    
-                                    <div class="transaction-item-new status-{{ status_normalized }}">
-                                        <div class="icon-illustration">
-                                            <i class="{{ status_icone }}"></i>
-                                        </div>
-                                        <div class="transaction-details-new">
-                                            <span class="transaction-type-new">
-                                                Levantamento: {{ status_texto }}
-                                            </span>
-                                            <span class="transaction-date-new">{{ record.created_at|date:"d/m/Y H:i" }}</span>
-                                        </div>
-                                        <span class="transaction-amount-new amount-{{ status_normalized }}">- {{ record.amount|default:"0.00" }} KZ</span> {# O saque é uma saída, usamos o sinal de menos #}
-                                        <div class="status-tag-new tag-{{ status_normalized }}">
-                                            <i class="{{ status_icone }}"></i> {{ status_texto }}
-                                        </div>
+                                <div class="transaction-item-new status-{{ status_normalized }}">
+                                    <div class="icon-illustration">
+                                        {# Ícone baseado no status #}
+                                        {% if status_normalized == 'pending' %}
+                                            <i class="fas fa-clock"></i>
+                                        {% elif status_normalized == 'aprovado' or status_normalized == 'approved' %}
+                                            <i class="fas fa-check-circle"></i>
+                                        {% elif status_normalized == 'rejeitado' or status_normalized == 'rejected' %}
+                                            <i class="fas fa-times-circle"></i>
+                                        {% else %}
+                                            <i class="fas fa-hand-holding-usd"></i>
+                                        {% endif %}
                                     </div>
-                                    {% endwith %}
-                                    {% endwith %}
-
+                                    <div class="transaction-details-new">
+                                        <span class="transaction-type-new">
+                                            Levantamento: 
+                                            {% if status_normalized == 'pending' %}Pendente{% elif status_normalized == 'aprovado' or status_normalized == 'approved' %}Aprovado{% elif status_normalized == 'rejeitado' or status_normalized == 'rejected' %}Rejeitado{% else %}Em Processo{% endif %}
+                                        </span>
+                                        <span class="transaction-date-new">{{ record.created_at|date:"d/m/Y H:i" }}</span>
+                                    </div>
+                                    <span class="transaction-amount-new amount-{{ status_normalized }}">- {{ record.amount|default:"0.00" }} KZ</span> {# O saque é uma saída, usamos o sinal de menos #}
+                                    <div class="status-tag-new tag-{{ status_normalized }}">
+                                        {# Texto da tag #}
+                                        {% if status_normalized == 'pending' %}
+                                            <i class="fas fa-hourglass-half"></i> Pendente
+                                        {% elif status_normalized == 'aprovado' or status_normalized == 'approved' %}
+                                            <i class="fas fa-check"></i> Aprovado
+                                        {% elif status_normalized == 'rejeitado' or status_normalized == 'rejected' %}
+                                            <i class="fas fa-times"></i> Rejeitado
+                                        {% else %}
+                                            <i class="fas fa-question"></i> Desconhecido
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endwith %}
                             {% endfor %}
 
                         </div>
@@ -559,20 +564,6 @@
     .status-tag-new.tag-rejeitado,
     .status-tag-new.tag-rejected {
         background-color: #e74c3c;
-    }
-    
-    /* Desconhecido (Adicionado) */
-    .transaction-item-new.status-unknown {
-        border-left-color: #7f8c8d; /* Cinza Escuro */
-    }
-    .transaction-item-new.status-unknown .icon-illustration {
-        color: #7f8c8d;
-    }
-    .transaction-amount-new.amount-unknown {
-        color: #7f8c8d;
-    }
-    .status-tag-new.tag-unknown {
-        background-color: #7f8c8d;
     }
 
     /* Media Queries */
